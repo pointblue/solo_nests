@@ -1,0 +1,29 @@
+﻿date,nestid,area,ch_id,ch_size,n_neighbors,symbol,start_t,end_t,ch_wt,bag_wt,ch_mass,poss_conflict,method,proofed,notes
+12/28/2021,solo8,C,1,MEL2,1,(WP) O,19:52,19:55,1530,380,1150,"8, 30, 3",1min LT,1,
+12/29/2021,solo22,M,1,GF1,0,blank,19:21,19:27,1040,200,840,"22, 40, 17",2min EM,1,parent did not seem to notice tape addition to chick
+12/29/2021,solo41,M,1,GF2,0,blank,19:53,19:58,1130,200,930,"41, 23",2min EM,1,"little off-center, still in mid-back"
+12/29/2021,solo26,HK,1,GF2,0,blank,20:40,20:44,900,180,720,2CHX in nest,2min EM,1,"come back for CH2 if it gets to GF size, right now was Orangey"
+12/29/2021,solo17,L,1,PA,0,blank,21:08,21:11,1370,180,1190,no,1min LT,1,
+12/30/2021,solo34,B,1,PA,0,blank,19:11,19:15,1670,180,1490,"33, 34",1min LT,1,pushing PA+
+12/30/2021,solo37,B,1,MEL1,0,(WP) X,19:30,19:39,1250,180,1070,2CHX in nest,1min LT,1,either big MEL1 or small MEL2
+12/30/2021,solo37,B,2,GF1,0,blank,19:30,19:39,720,200,520,2CHX in nest,1min LT,1,"reweighed, 690 second time, bg_wt=190"
+1/1/2022,solo20,C,1,GF2,0,(DT) -,20:49,20:59,970,190,780,"20, 21",2min EM,1,needs a check to make sure secure
+1/2/2022,solo6,M,1,MEL2,3,blank,18:33,18:46,1360,190,1170,2CHX in nest,2min EM,1,"large MEL2, but not quite yet PA"
+1/2/2022,solo6,M,2,MEL2,3,(DT) X,18:33,18:46,1030,190,840,2CHX in nest,2min EM,1,slightly smaller than CH1
+1/2/2022,solo23,L,1,PA,0,(DT) O,19:38,19:42,1340,190,1150,"23, 41",1min LT,1,LT feels noticeably harder when it sets
+1/2/2022,solo25,L,1,MEL2,0,blank,20:00,20:06,1340,190,1150,"25, 24",1min LT,1,"CH did a runner into the shit-river, had to rescue it and put it back in the nest. Adult flushed ~4 meters away during return, but came back and they called to each other and seemed fine"
+1/3/2022,solo47,B,1,GF1,0,blank,17:22,17:27,820,190,630,"47, 38",1min LT,1,"some down torn out during application, but chick and AD seem fine"
+1/3/2022,solo38,B,1,MEL2,0,(DT) |,17:46,17:51,1400,190,1210,"38, 47",1min LT,1,"FAT MEL2, but not tall enough to be PA"
+1/5/2022,solo29,M,1,GF2,0,blank,20:05,20:09,840,200,640,"29, 42",1min LT,1,
+1/6/2022,solo5,C,1,MEL1,0,(DT) X,15:20,15:29,1070,160,910,"5, 48; 2CHX",1min LT,1,"scale was acting weird -- gave me 1080 2x, 1060 2x, 1070 1x. See notes in protocol for details. Small MEL1, but not a GF. Sprinter."
+1/6/2022,solo5,C,2,GF1,0,blank,15:20,15:29,560,160,400,"5, 48; 2CHX",1min LT,1,tared scale after this wt/bgwt was taken
+1/6/2022,solo48,C,1,GF2,0,(DT) =,15:41,15:46,930,190,740,"48, 5 (2CHX)",1min LT,1,
+1/6/2022,solo21,C,1,PA,0,(DT) |,15:56,16:01,1290,180,1110,"21, 20",1min LT,1,"super mobile chick, very independent"
+1/6/2022,solo3,M,1,MEL1,0,(DT) =,18:26,18:37,1010,200,810,2CHX in nest,1min LT,1,
+1/6/2022,solo3,M,2,GF1,0,blank,18:26,18:37,570,200,370,2CHX in nest,1min LT,1,
+1/6/2022,solo40,M,1,MEL1,1,(DT) O,19:32,19:41,1200,200,1000,"40, 22; 2CHX",1min LT,1,"scale read 1220 2x, 1240 2x, 1170 1x, 1120 1x?? 0 averaged and rounded wt. Big MEL1 but not quite MEL2 yet"
+1/6/2022,solo40,M,2,GF1,1,blank,19:32,19:41,660,200,460,"40, 22; 2CHX",1min LT,1,"probably shouldn't have marked this one as blank. If it lives a little longer, recapture and add DT stripe? May conflict with 22's blank-tape chick"
+1/6/2022,solo14,P,1,MEL2,0,blank,20:38,20:42,1380,200,1180,NA,1min LT,1,AD ran at me while I retrieved CH. CH seems fine.
+1/6/2022,solo26,HK,1,PA,1,(DT) -,21:11,21:21,1430,170,1260,2CHX in nest,1min LT,1,"took off old tape, added new -- didn't look as bad as we originally thought it was"
+1/6/2022,solo26,HK,2,GF1,1,blank,21:11,21:21,440,170,270,2CHX in nest,1min LT,1,skinny
+1/13/2922,solo45,QR,1,MEL1,1,blank,16:57,17:02,1290,190,1100,NA,1min LT,1,"borderline MEL2. very quiet during handling. Scale read 1300 2x, 1290 1x, 1250 1x, 1320 1x"
