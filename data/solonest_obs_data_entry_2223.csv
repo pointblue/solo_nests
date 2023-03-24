@@ -1,0 +1,137 @@
+nestid,date,status,nest_quality,egg_n,chick_n,ch1_size,ch2_size,n_neighbors,observer,proofed,notes
+1,12/5/2022,MT,,,,,,,DJ,y,No flag found and no nearby nests
+2,,,,,,,,,,,
+3,11/22/2022,INC,,9,,,,,DJ,y,
+3,12/7/2022,INC,FBN,9,,,,0,DJ,y,
+4,,,,,,,,,,,
+4,12/7/2022,INC?,,9,,,,A WHOLE NEW SUBCOL?,MLE,y,"FL OUT, 0 SOLOS CLOSE, KINDA A BIG SUBCOL HERE NOW"
+5,11/22/2022,MT,,,,,,0,MLE,Y,
+6,12/4/2022,INC,,9,,,,2,MLE,y,"w 2 neighbors active, plus 2 STDs"
+6,12/7/2022,INC,WBN,8,,,,3,MLE,y,2 NEIGHBORS INC 9 ON WBN PLUS ONE IN SC
+7,,,,,,,,,,,
+8,11/22/2022,INC,,9,,,,1,DJ,y,
+8,12/4/2022,INC,,2,,,,1,MLE,y,neighbor was active (INC 8)
+8,12/5/2022,MT?,,,,,,1 OR 2,DJ,y,Flag is just below two other nests and next to empty scoop. Two other nests are INC2 and INC9
+9,12/7/2022,INC?,WBN,9,,,,,MLE,y,"unclear, FL out, one INC9 cl to GPS pt but seems too cl to subcol (<1 GB away)"
+10,12/5/2022,INC?,,,,,,2,MLE,y,"FL out. 2 nests b/t solo nests 10, 11, 12"
+11,12/5/2022,MT,,,,,,,MLE,y,FL out. No one close
+12,12/5/2022,MT,,,,,,,MLE,y,FL out. No one close
+13,12/5/2022,INC?,,,,,,6,DJ,y,No flag found. Group of 7 nests at gps coords
+14,12/5/2022,MT,,,,,,,AYL,y,FL in
+15,12/5/2022,MT,,,,,,,AYL,y,no FL
+15,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+16,12/2/2022,MT,,,,,,,DJ,y,FL broken
+16,1/15/2023,UNK,,,,,,,AL,y,"EMPTY NEST, PULLED NAIL, FLAG WAS GONE"
+17,12/5/2022,INC,WBN,8,,,,0,MLE,y,re-FL
+18,12/5/2022,MT,,,,,,,DJ,y,No flag or nests in the area
+19,12/5/2022,INC?,,,,,,4,MLE,y,"FL out, unclear. 5 occupied territories close to point"
+20,11/22/2022,INC,WBN,9,,,,2,MLE,y,1 neighbor was WBN
+20,11/29/2022,INC,,9,,,,,DJ,y,
+20,12/4/2022,INC,,2,,,,0,MLE,y,
+20,12/5/2022,INC,WBN,9,,,,0,MLE,y,
+21,11/22/2022,WBN,WBN,,,,,0,MLE,Y,
+21,11/28/2022,MT,,,,,,,DJ,y,
+21,12/4/2022,MT,,,,,,,MLE,y,
+22,,,,,,,,,,,
+22,12/7/2022,FAIL?,,,,,,,DJ,y,No flag or nest found but there was a nest or pair in this area earlier in the season.
+23,12/5/2022,MT,,,,,,,MLE,y,"no flag, no birds around"
+24,11/19/2022,P/INC,,8,,,,,DJ,y,
+24,12/5/2022,INC,WBN,2,,,,0,MLE,y,
+24,1/15/2023,G,,,1,PA+,,,AL,y,PULLED FLAG
+25,11/19/2022,INC,,8,,,,,DJ,y,
+25,12/4/2022,INC,,2,,,,,DJ,y,"FL near MT scoop, next scoop over was INC2"
+25,12/5/2022,INC,WBN,1,,,,0,MLE,y,1 MT SC close to FL
+25,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+26,11/21/2022,INC,,2,,,,,DJ,y,
+26,12/4/2022,INC,,9,,,,,DJ,y,
+26,12/5/2022,INC,FBN,8,,,,0,AYL,y,FL in
+26,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+27,12/5/2022,MT,,,,,,,AYL,y,"no FL, unsure whether MT SC or INC2 bird close to subcolony (see photo)"
+28,12/5/2022,INC,WBN,8,,,,0,AYL,y,FL today
+28,1/15/2023,UNK,,,,,,,AL,y,"EMPTY NEST, PULLED FLAG"
+29,11/22/2022,INC,,9,,,,,MLE,y,tight sitter
+29,12/4/2022,INC,,8,,,,0,MLE,y,
+29,12/7/2022,INC,WBN,9,,,,0,MLE,y,
+30,12/7/2022,FBN?,FBN,0,,,,0,MLE,y,"sort of occupied, current occupant sprints away easily"
+31,12/7/2022,MT,,,,,,,AYL,y,nail but no FL
+32,12/7/2022,MT,,,,,,,AYL,y,
+33,12/5/2022,MT,,,,,,,DJ,y,Flag broken
+34,12/5/2022,INC,WBN,9,,,,0,DJ,y,
+35,12/5/2022,MT,,,,,,,DJ,y,
+36,12/5/2022,MT,,,,,,1,DJ,y,Neighbor nest about 1.5m away from flag and is INC9. Flag is blank
+37,11/19/2022,P/WBN,WBN,,,,,1,MLE,y,
+37,12/5/2022,MT,,,,,,,DJ,y,
+38,11/19/2022,MT,,,,,,,MLE,Y,
+38,12/5/2022,MT,,,,,,,DJ,y,
+39,12/5/2022,INC,PBN,8,,,,,DJ,y,Reflagged. 
+40,,,,,,,,,,,
+40,12/7/2022,INC,FBN,9,,,,0,DJ,y,No flag found. But only solo nester in area next to a boulder.
+41,11/22/2022,INC,,2,,,,0,AYL,y,
+41,11/29/2022,INC,,9,,,,0,AYL,y,
+41,12/7/2022,INC9,FBN,,,,,0,AYL,y,FL in
+42,12/7/2022,INC?,,9,,,,,MLE,y,"FL out, not sure which, 3 solos all INC cl to GPS pt but not cl enough to be neighbors"
+43,12/5/2022,MT,,,,,,,AYL,y,FL in
+43,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+44,12/2/2022,MT,,,,,,,DJ,y,
+44,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+45,11/19/2022,WBN,WBN,,,,,0,MLE,Y,
+45,12/2/2022,MT,,,,,,,DJ,y,FL broken
+45,12/5/2022,MT,,,,,,,AYL,y,NO FL
+45,1/15/2023,UNK,,,,,,,AL,y,"BIRD ON EMPTY NEST, PULLED NAIL, FLAG WAS GONE"
+46,12/5/2022,MT,,,,,,,AYL,y,No FL. Two INC8 birds 5 m downslope both are FBN. Both could be solo sites but probably too far from gps site. This matches description from last year.
+46,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+47,12/5/2022,MT?,,,,,,,DJ,y,Flag not found. One potential solo nest (INC9) found nearby but doesn't seem close enough to gps coords
+48,11/22/2022,MT,,,,,,0,MLE,Y,
+48,12/4/2022,MT,,,,,,0,MLE,y,
+49,12/5/2022,MT,,,,,,,MLE,y,just a nail
+49,1/15/2023,UNK,,,,,,,AL,y,NO FLAG
+50,12/5/2022,INC,WBN,1,,,,0,MLE,y,re-FL
+50,1/15/2023,G,,,1,PA+,,,AL,y,PULLED FLAG
+1,12/13/2023,NBS,,,,,,,AMC,y,"NO OBVIOUS FLAG OR NEST, 2 BIRDS SLP ON SLOPE. NO NEST"
+3,12/13/2023,INC,FBN,2,,,,,AMC,y,"SEEMS LIKE SMALL ADULT, NERVOUS @ APPROACH, CLEAN, STANDS EASILY"
+6,12/13/2023,INC,WBN,8,,,,4,AMC,y,"PIPPING EGG, TIGHT SIT, SHARING ONE SHELTER ROCK WITH NEIGHBOR"
+8,12/13/2023,UNK,WBN,,,,,1,AMC,y,"TIGHT SITTER, CLEAN AND BIG"
+13,12/13/2023,NBS,,,,,,,AMC,y,NO FLAG BUT 2 GROUPS (7 PENG & 2 PENG) OF SOLO NESTS
+14,12/13/2023,NBS,PBN,,,,,,AMC,y,"LOTS OF PEBBLES, NO BIRD PRESENT, NEXT TO SMAL SUBCOLONY OF 34"
+15,12/13/2023,NBS,,,,,,,AMC,y,NO NEST OR FLAG APPARENT
+17,12/13/2023,INC,WBN,2,,,,,AMC,y,
+18,12/13/2023,NBS,,,,,,,AMC,y,NO OBVIOUS NEST OR FLAG
+22,12/13/2023,NBS,,,,,,,AMC,y,NO NEST OR FLAG APPARENT
+23,12/13/2023,NBS,,,,,,,AMC,y,NO NEST OR FLAG APPARENT
+24,12/13/2023,INC,FBN,2,,,,,AMC,y,SKUA WAITING AND WATCHING 1 METER FROM NEST
+25,12/13/2023,INC,FBN,1,,,,,AMC,y,"PAIRED BIRD PRESENT, LHV"
+29,12/13/2023,INC,,2,,,,,AMC,y,GDR FLAG?
+30,12/13/2023,NBS,,,,,,,AMC,y,"OLD NEST, NO FLAG"
+32,12/13/2023,NBS,,,,,,,AMC,y,"FLAG IN BUT NO NEST, UNCLEAR IF 31 OR 32"
+33,12/13/2023,NBS,,,,,,,AMC,y,"FLAG OUT, NO NEST"
+34,12/13/2023,INC,WBN,,,,,,AMC,y,"BIRD TIGHT SITTER, FAT AND CLEAN, SLPING"
+35,12/13/2023,NBS,,,,,,,AMC,y,"OLD FLAG PRESENT, NO NEST"
+36,12/13/2023,NBS,,,,,,,AMC,y,"OLD NEST, NO FLAG"
+37,12/13/2023,NBS,PBN,,,,,,AMC,y,"NEIGHBOR PRESENT, MARAUDING PEBBLES"
+38,12/13/2023,NBS,SC,,,,,,AMC,y,"SCOOP PRESENT @ FLAG, NO PEBBLES"
+39,12/13/2023,INC,FBN,8,,,,,AMC,y,POO EVERYWHERE BUT CLEAN BIRD
+40,12/13/2023,INC,,8,,,,,AMC,y,"TWO BIRDS VERY CLOSE TO FLAG, IDENTITY AMBIGUOUS"
+41,12/13/2023,INC,WBN,2,,,,,AMC,y,JUST DOWNSLOPE FROM SKUA CLUB (~60 BIRDS)
+42,12/13/2023,NBS,,,,,,,AMC,y,NO NEST OR FLAG SEEN
+47,12/13/2023,INC,WBN,2,,,,,AMC,y,NEXT TO SHELTER LEDGE
+49,12/13/2022,NBS,,,,,,,AMC,y,"FLAG IN, NO NEST PRESENT"
+3,12/17/2022,BR,WBN,,2,OR1,LEM,0,AMC,y,
+50,12/20/2022,INC,WBN,1,,,,0,AMC,y,IN HIGHWAY BETWEEN 3 SUBCOLONY FINGERS
+9,12/20/2022,NBS,,,,,,,AMC,y,"FLAG OUT, 1 SOLO NESTER BR9 IN VICINITY OF SEVERAL MT SCOOPS"
+16,12/20/2022,NBS,,,,,,,AMC,y,"NO BIRD, NO FLAG"
+43,12/20/2022,NBS,SC,,,,,,AMC,y,"FLAG FOUND, NO BIRD"
+44,12/20/2022,NBS,SC,,,,,2,AMC,y,"FLAG FOUND, NO BIRD SEEN, 2 SOLO NESTS DOWNSLOPE"
+45,12/20/2022,UNK,SC,,,,,1,AMC,y,"1 BIRD STANDING IN SCOOP AT FLAG, ANOTHER SCOOP W. PENG ON OTHER SIDE OF ROCK"
+46,12/20/2022,NBS,,,,,,,AMC,y,"NO FLAG SEEN, SCOOP PRESENT NEXT TO SHELTER ROCK W. AT LEAST ONE ACTIVE NEST"
+27,12/20/2022,NBS,,,,,,,AMC,y,"NO BIRD OR FLAG APPARENT, SMALL SUBCOL OF 4 JUST UPSLOPE"
+26,12/20/2022,NBS,SC,,,,,,AMC,y,"FOUND FLAG, NO BIRD PRESENT, ONLY SCOOP"
+13,12/13/2022,UNK,,8,,,,,AYL,y,7 BIRDS AT POINT ALL INC 8; NO FLAG
+19,12/13/2022,UNK,,8,,,,,AYL,y,6 BIRDS NEAR POINT ALL INC8; NO FLAG
+20,12/13/2022,INC,FBN,2,,,,0,AYL,y,
+21,12/13/2022,MT,,,,,,,AYL,y,
+10,12/13/2022,MT,,,,,,,AYL,y,
+12,12/13/2022,MT,,,,,,,AYL,y,no flag
+11,12/13/2022,MT,,,,,,,AYL,y,
+48,12/13/2022,MT,,,,,,,AYL,y,
+5,12/13/2022,MT,,,,,,,AYL,y,
+3,12/30/2022,BR,,,2,GF2,GF1,,AMC,y,

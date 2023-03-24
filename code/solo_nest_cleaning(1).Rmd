@@ -1,0 +1,135 @@
+---
+title: "Solo_Nest_Data_Cleaning: First Script Run"
+author: "Aidan Cox"
+date: "8/29/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## LIBRARY LIST
+
+```{r library}
+library(tidyverse)
+library(data.table)
+library(lubridate)
+```
+
+## Input Solo Nest Data
+```{r sn data input}
+initial_solo_obs <- fread("solonest_initial_locations.csv") # initial locations
+
+solo_outcome <- fread("solo_outcomes.csv")
+solo_outcome_br <- solo_outcome %>% filter(!is.na(start)) # get only the breeders
+solo_outcome_br <- solo_outcome_br %>% dplyr::select(nestid, outcome_ka) # focus on what matters
+
+succ <- solo_outcome_br %>% filter(outcome_ka > 0)
+succ$outcome_ka <- 1
+fail <- solo_outcome_br %>% filter(outcome_ka == 0)
+solo_outcome_br <- rbind(succ, fail)
+rm(succ, fail)
+
+solo_outcome_br$outcome_ka <- factor(solo_outcome_br$outcome_ka )
+
+# left join of data, where df:initial_solo_obs contains nest location and quality variables
+solo_rs <- solo_outcome_br %>%
+  left_join(initial_solo_obs, by = "nestid")
+
+solo_rs <- solo_rs %>% dplyr::select(-c(northing, easting, description, egg_number, notes))
+
+solo_rs$pebble_distrib_nearby <- factor(solo_rs$pebble_distrib_nearby, levels = c("none", "some", "abundant"))
+solo_rs$pebble_distrib_nearby <- as.numeric(solo_rs$pebble_distrib_nearby) # convert character factor to numeric
+solo_rs$pebble_distrib_nearby <- solo_rs$pebble_distrib_nearby - 1
+solo_rs$pebble_distrib_nearby <- factor(solo_rs$pebble_distrib_nearby, levels = c(0,1,2))
+
+# add a column for rock present?
+solo_rs$rock_yn <- cut(solo_rs$rocksize_cm, breaks = c(0,1,150), labels = c(0,1))
+solo_rs[is.na(solo_rs)] <- 0
+solo_rs$rock_yn <- factor(solo_rs$rock_yn)
+
+rm(solo_outcome, solo_outcome_br) # cleanup
+
+# add in neighbor data
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+raw_solo <- fread("solonest_obs_data_entry_2122.csv")
+raw_solo[is.na(raw_solo)] <- 0
+yes <- raw_solo %>% filter(n_neighbors > 0)
+yes$neighbor_y <- 1
+no <- raw_solo %>% filter(n_neighbors == 0)
+no$neighbor_y <- 0
+raw_solo <- rbind(yes, no)
+rm(yes,no)
+
+neighbs <- raw_solo %>% group_by(nestid) %>% summarize(prop_neighbs = mean(neighbor_y), neighbs_yn = Mode(neighbor_y))
+
+solo_rs <- left_join(solo_rs, neighbs, by = ("nestid"))
+solo_rs$position <- 0
+solo_rs$coarse_nestpos <- 0
+solo_rs$coarse_nestpos <- factor(solo_rs$coarse_nestpos)
+solo_rs$colonial <- 0
+solo_rs$colonial <- factor(solo_rs$colonial)
+
+solo_rs <- solo_rs %>% filter(nestid != "solo44") # exclude this bird because of large observation gap
+```
+
+## Input Known-Age Nest Data
+```{r KA data input}
+initial_ka_obs <- fread("ka_resight21.csv")
+
+ka_outcome <- fread("ka_nest_outcomes21.csv")
+
+# filter out non-breeders
+ka_outcome_br <- ka_outcome %>% filter(result != "UNK")
+
+# transform character outcome to numeric factor
+succ <- ka_outcome_br %>% filter(result != "FAIL")
+succ$outcome_ka <- 1
+fail <- ka_outcome_br %>% filter(result == "FAIL")
+fail$outcome_ka <- 0
+ka_outcome_br <- rbind(succ, fail)
+rm(succ, fail)
+# focus on relevant data
+ka_outcome_br <- ka_outcome_br %>% dplyr::select(c(nest, outcome_ka, result))
+
+# get most common nest position and location
+initial_ka_obs <- initial_ka_obs %>% group_by(bandnumb) %>% summarise(position = Mode(nestpos), latitude = min(lat), longitude = max(lon))
+
+initial_ka_obs <- initial_ka_obs %>% dplyr::rename(nest = bandnumb)
+
+# join the data
+ka_rs <- left_join(ka_outcome_br, initial_ka_obs, by = c("nest"))
+ka_rs$colonial <- 1 # identify as known-age, colony breeders
+ka_rs <- ka_rs %>% filter(position != 0) # filter for only nests that have position data
+center <- ka_rs %>% filter(position > 1)
+center$coarse_nestpos <- 2
+edge <- ka_rs %>% filter(position == 1)
+edge$coarse_nestpos <- 1
+ka_rs <- rbind(center, edge)
+rm(center, edge)
+ka_rs$coarse_nestpos <- factor(ka_rs$coarse_nestpos, levels = c(1,2))
+
+```
+
+## Aidan's Original Designations
+```{r A Design}
+nests <- c(seq(1:50))
+nests <- paste("solo", nests, sep = "")
+outcomes = c(NA, NA, 1, NA, 1, 1, NA, 1, NA, NA,
+             NA, NA, 0, 1, 0, NA, 1, NA, NA, 1,
+             1, 1, 1, 0, 1, 1, NA, 0, 1, 0,
+             0, 1, 0, 1, 0, NA, 1, 1, 0, 0,
+             0, 0, 0, NA, 1, NA, 1, 1, 0, 0)
+a_designs <- data.frame(
+  nestid = nests,
+  outcome = outcomes
+)
+a_designs_br <- a_designs %>% filter(!is.na(outcome))
+comp <- left_join(a_designs_br, solo_rs, by = c("nestid"))
+comp <- comp %>% dplyr::select(c("nestid", "outcome", "outcome_ka"))
+```

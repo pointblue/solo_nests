@@ -4,6 +4,8 @@
 library(tidyverse)
 
 source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\fish-tags.R)')
+source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\solo_nest.R)')
+source('code/functions.R')
 
 resight_16 <- read_csv(r'(Z:\Informatics\S031\S0311617\croz1617\bandsearch\resight16.csv)') %>%
   mutate(date = lubridate::mdy(date),
@@ -24,12 +26,6 @@ resight_21 <- read_csv(r'(Z:\Informatics\S031\S0312122\croz2122\bandsearch\resig
 
 # non-breeders ------------------------------------------------------------
 
-prop.nonbreed <-
-  function(resight) {
-    resight %>%
-      group_by(bandnumb) %>% 
-      filter
-  }
 
 resight_21 %>% 
   pull(bandnumb) %>% 
@@ -326,3 +322,32 @@ fish_size_cr %>%
                values_to = 'prop') %>% filter(season != 2021) %>% 
   group_by(Size) %>% 
   summarize(meanProp = mean(prop), sdProp = sd(prop))
+
+
+# Spatial distribution -------------------------------------------------------------------------
+
+
+r16 <-
+  find_fishtag(resight_16, year = 1617)
+r17 <-
+  find_fishtag(resight_17, year = 1718)
+r18 <-
+  find_fishtag(resight_18, year = 1819)
+r19 <-
+  find_fishtag(resight_19, year = 1920)
+
+subcolony_dist <-
+  rbind(r16,
+        r17,
+        r18, 
+        r19) %>%
+  arrange(date) %>%
+  group_by(season, bandnumb) %>% 
+  slice_head(n=1) %>% 
+  group_by(season, subcolony) %>%
+  summarize(n = 
+              unique(bandnumb) %>% 
+              length()) %>% 
+  ungroup()
+
+

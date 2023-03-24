@@ -23,6 +23,7 @@ fishtagComp %>%
   group_by(season, bandnumb) %>%
   summarize(lat = mean(lat), lon = mean(lon), CR = (crChx >= 1), type = 'Subcolony') %>% 
   ungroup() %>% 
+  # fill in position of one missing nest
     mutate(lat = if_else(is.na(lat),
                          -77.45257,
                          lat),
