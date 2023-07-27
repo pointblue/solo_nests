@@ -1,171 +1,168 @@
 
 # setup -------------------------------------------------------------------
 
-source('code/analytics/summary_stats.R')
-rm(resight_21)
+source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\solo_comparison.R)')
 
-solo_outcomes <- 
-  read_csv('data/solo_outcomes.csv')
+source('code/functions.R')
 
-solo_locations <-
-  read_csv('data/solonest_initial_locations.csv')
 
-resight_solo <- read_csv("data/solonest_obs_data_entry_2122.csv") %>%
-  mutate(date = lubridate::mdy(date))
-
+# extract resight records only from nests in our study
 r16 <-
-  find_fishtag(resight_16, year = 1617)
+  read_csv(r'(Z:\Informatics\S031\S0311617\croz1617\bandsearch\resight16.csv)') %>% 
+  mutate(date = lubridate::mdy(date),
+         type = 'Subcolony',
+         season = 1617) %>% 
+  find_fishtag(., year = 1617)
+
 r17 <-
-  find_fishtag(resight_17, year = 1718)
-r18 <-
-  find_fishtag(resight_18, year = 1819)
+  read_csv(r'(Z:\Informatics\S031\S0311718\croz1718\bandsearch\resight17.csv)')%>%
+  mutate(date = lubridate::mdy(date),
+         type = 'Subcolony',
+         season = 1718) %>% 
+  find_fishtag(., year = 1718)
+
+r18 <- 
+  read_csv(r'(Z:\Informatics\S031\S0311819\croz1819\bandsearch\resight18.csv)')%>%
+  mutate(date = lubridate::mdy(date),
+         type = 'Subcolony',
+         season = 1819) %>% 
+  find_fishtag(., year = 1819)
+
 r19 <-
-  find_fishtag(resight_19, year = 1920)
+  read_csv(r'(Z:\Informatics\S031\S0311920\croz1920\bandsearch\resight19.csv)') %>%
+  mutate(date = lubridate::mdy(date),
+         type = 'Subcolony',
+         season = 1920) %>% 
+  find_fishtag(., year = 1920)
 
+r21 <-
+  read_csv(r'(Z:\Informatics\S031\S0312122\croz2122\bandsearch\resight21.csv)') %>% 
+  mutate(date = lubridate::mdy(date),
+         type = 'Subcolony',
+         season = 2122) %>%  
+  filter(bandnumb %in% ka_outcome$bandnumb) 
+  
 
-# table 1 -----------------------------------------------------------------
+# table 2 -----------------------------------------------------------------
 
 # detailed table on nest characteristics
 # possibly supplementary material
 
-resight_solo %>%
-  group_by(nestid) %>% 
-  mutate(
-    Duration = max(date) - min(date)) %>% 
-  arrange(date) %>% 
-  slice_head(n = 1) %>% 
-  ungroup() %>% 
+
+table2 <- 
+  fishtagComp %>% 
   transmute(
-    Year = 2021,
-    Type = 'Solitary',
-    nestid,
-    Start = date,
-    'Observation Period' = Duration) %>% 
-  left_join(
-    (solo_locations %>% 
-       select(nestid,
-              Lon = longitude, 
-              Lat = latitude))) %>% 
-  left_join(
-    (solo_outcomes %>% 
-      select(nestid,
-             Outcome = cr_confirm)),
-    by = 'nestid') %>% 
-  filter(!is.na(Outcome)) %>% 
-  rename(ID = 'nestid')
+    season = sapply(season, seas_fy),
+    `Nest Type` = 'Subcolony',
+    `Active Nests` = nNests,
+    `Brood Success` = BrSucc,
+    `Creche Success` = CrSucc,
+    `Transition Mortality` = transMort) %>% 
+  rbind(
+    solo_ka %>% 
+      mutate(type = if_else(
+        type == 'solo',
+        'Solitary',
+        'Subcolony')) %>% 
+      group_by(type) %>% 
+      summarize(`Active Nests` = n(),
+                `Brood Success` = mean(kaChx)) %>% 
+      cbind(
+        tibble(
+          `Creche Success` = c(All.Success$`Chicks Per Nest`[3], NA))) %>% 
+      rename(`Nest Type` = type) %>% 
+      mutate(season = 2021,
+             `Transition Mortality` = `Brood Success` - `Creche Success`))
 
-# general table describing characteristics between years
-# year, type, number active nests, median hatch, median CR, avg sample success, avg. colony succ.
 
-resight_all <- 
-  resight_solo %>%
-  mutate(season = 2122) %>%
-  select(season,
-         nestid,
-         date,
-         status) %>% 
-  left_join(
-    solo_outcomes %>% 
-      select(nestid, Outcome = cr_confirm),
-    by = 'nestid') %>% 
-  left_join(
-    ground_count_avg %>% 
-      select(season, 'Colony Success' = avgSuccess),
-    by = 'season'
-  ) %>% 
-rbind(
-  (rbind(
-    r16,
-    r17,
-    r18,
-    r19) %>% 
-     select(season,
-            nestid = bandnumb,
-            date,
-            status) %>% 
-     left_join((fishtagComp %>% 
-                  select(season,
-                         nestid = bandnumb,
-                         Outcome = crChx,
-                         'Colony Success' = avgSuccess)),
-               by = c('season', 'nestid')) %>% 
-     mutate(nestid = as.character(nestid))))
+# table 3 -----------------------------------------------------------------
 
-# find median hatch date
-resight_all %>% 
-  group_by(season, nestid) %>% 
-  filter(grepl('BR', status)) %>% 
-  filter(date == min(date) & nestid != 'solo27') %>% 
-  distinct() %>%
-  group_by(season) %>% 
-  arrange(date) %>%
-  summarize(
-    'Median Hatch' = median(date))
 
-# find median cr date
-# see 'code/analytics/summary_stats.R for calculation of median CR dates
 
-med_cr <- 
-  tibble(
-    season = c(1617,
-               1718,
-               1819,
-               1920,
-               2122),
-    'Median CR' = c(
-      "2017-01-05",
-      "2018-01-15",
-      "2019-01-04",
-      "2020-01-05",
-      "2022-01-10")) %>%
-  mutate('Median CR' = lubridate::ymd(`Median CR`))
+  
 
-# find average within sample success
-avg.succ <- 
-  solo_comp %>%
-  group_by(season) %>%
-  summarize(min = min(crChx),
-            q1 = quantile(crChx, 0.25),
-            mean = mean(crChx),
-            sd = sd(crChx),
-            median = median(crChx),
-            q3 = quantile(crChx, 0.75),
-            max = max(crChx),
-            n = n()) %>% 
-  select(season,
-         'Active nests' = n,
-         'Average Sample Success' = mean,
-         sd = sd)
+# calculating median hatch and creche --------------------------------------------------------
 
-# table1 <-
-  resight_all %>%
-    group_by(season, nestid) %>% 
-    filter(grepl('BR', status)) %>% 
+  # compile resight records for all penguins in this study
+  resight_all <-
+    rbind(r16,
+          r17,
+          r18,
+          r19,
+          r21) %>% 
+    # select columns of interest
+    dplyr::select(nestid = bandnumb,
+                  date,
+                  status,
+                  nuegg, 
+                  nuch,
+                  chick1size,
+                  chick2size,
+                  type,
+                  season,
+                  notes) %>% 
+    # add solo resight
+    rbind(
+      (resight_solo %>% 
+         dplyr::transmute(nestid,
+                          date,
+                          status,
+                          nuegg = egg_n,
+                          nuch = chick_n,
+                          chick1size = ch1_size,
+                          chick2size = ch2_size,
+                          notes, 
+                          type = 'Solitary',
+                          season = 2021))) 
+  
+  # find median hatch date
+  med_hatch <-
+    resight_all %>% 
+    group_by(season, type, nestid) %>% 
+    filter(grepl('BR', status) & nuch != 9) %>% 
     filter(date == min(date) & nestid != 'solo27') %>% 
     distinct() %>%
-    group_by(season) %>% 
+    group_by(season, type) %>% 
     arrange(date) %>%
     summarize(
-      'Median Hatch' = median(date),
-      'Colony Success' = mean(`Colony Success`)) %>% 
-    left_join(
-      med_cr, by = 'season') %>% 
-    left_join(avg.succ, by = 'season') %>% 
-    mutate(
-      Type = case_when(
-        season == 1617 ~ 'Subcolony',
-        season == 1718 ~ 'Subcolony',
-        season == 1819 ~ 'Subcolony',
-        season == 1920 ~ 'Subcolony',
-        season == 2122 ~ 'Solitary')) %>% 
-    select(season,
-           Type,
-           'Active nests',
-           'Median Hatch',
-           'Median CR',
-           'Sample Success' = 'Average Sample Success',
-           sd,
-           'Colony Success')
-    
+      'Median Hatch' = median(date)) %>% 
+    ungroup() %>% 
+    mutate(season = sapply(season, seas_fy))
+ 
+  # find median cr date
+  seasons <- c(1617, 1718, 1819, 1920)
   
+  cr_date <- tibble() 
+  
+  for (x in seasons) {
+    date <- 
+      fishtag_outcomes %>% 
+      filter(season==x & bandnumb %in% (fishtagComp %>% filter(season == x & crChx >= 1) %>% pull(bandnumb))) %>%
+      transmute(season,
+                bandnumb,
+                result_dt = lubridate::mdy(result_dt)) %>% 
+      distinct() %>%
+      pull(result_dt) %>% 
+      median()
+    cr <- tibble(
+      season = seas_fy(x),
+      type = 'Subcolony',
+      `Median Creche` = date)
+    cr_date <- 
+      rbind(cr, cr_date)
+  }
+  
+  cr_date <-
+    cr_date %>% 
+    rbind(
+      tibble(
+        season = 2021, 
+        type = 'Subcolony',
+        `Median Creche` = ka_outcome %>% 
+          filter(grepl('CR', result)) %>% 
+          select(bandnumb, result, result_dt) %>%
+          mutate(result_dt = lubridate::mdy(result_dt)) %>% 
+          pull(result_dt) %>% 
+          median(na.rm = T)))
+    
   

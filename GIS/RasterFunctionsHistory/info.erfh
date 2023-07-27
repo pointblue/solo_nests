@@ -1,0 +1,628 @@
+{
+  "version" : 1,
+  "name" : "Raster Functions History",
+  "historyItems" : [
+    {
+      "id" : "{B2F3E7B8-7F71-40A0-A61D-BF1202A4E783}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{B2F3E7B8-7F71-40A0-A61D-BF1202A4E783}.rft.xml",
+      "startTime" : "638195153670000000",
+      "endTime" : "638195153670000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{C2650714-ED75-4181-9DEA-2223770009F4}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{C2650714-ED75-4181-9DEA-2223770009F4}.rft.xml",
+      "startTime" : "638194502860000000",
+      "endTime" : "638194502860000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Stretch' [Stretch Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{DE7BA298-97E5-4792-AF5F-4EAD2D216766}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Contrast and Brightness",
+      "description" : "Adjusts the contrast and brightness of a raster.",
+      "rftPath" : "Contrast and Brightness_{DE7BA298-97E5-4792-AF5F-4EAD2D216766}.rft.xml",
+      "startTime" : "638195116690000000",
+      "endTime" : "638195116690000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{45EE293F-B8E7-4270-99C4-00CC0C91C9A5}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{45EE293F-B8E7-4270-99C4-00CC0C91C9A5}.rft.xml",
+      "startTime" : "638195106170000000",
+      "endTime" : "638195106170000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Stretch' [Stretch Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{9B2647D2-9C0F-4D3D-890C-DAA006A4B212}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{9B2647D2-9C0F-4D3D-890C-DAA006A4B212}.rft.xml",
+      "startTime" : "638195106410000000",
+      "endTime" : "638195106410000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Stretch' [Stretch Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{B23DBF2D-A113-45B7-9E7E-9AE7E68EA5C7}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{B23DBF2D-A113-45B7-9E7E-9AE7E68EA5C7}.rft.xml",
+      "startTime" : "638195106510000000",
+      "endTime" : "638195106510000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Stretch' [Stretch Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{BEA5C430-A7D5-4081-9142-EFC56D411D59}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Contrast and Brightness",
+      "description" : "Adjusts the contrast and brightness of a raster.",
+      "rftPath" : "Contrast and Brightness_{BEA5C430-A7D5-4081-9142-EFC56D411D59}.rft.xml",
+      "startTime" : "638195106640000000",
+      "endTime" : "638195106640000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Contrast and Brightness' [Contrast And Brightness Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{ACF3F6A1-0B58-4484-85EB-9CD4479930D6}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{ACF3F6A1-0B58-4484-85EB-9CD4479930D6}.rft.xml",
+      "startTime" : "638195109880000000",
+      "endTime" : "638195109880000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{AE29269C-8546-41B3-BB82-BB87D71998D7}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{AE29269C-8546-41B3-BB82-BB87D71998D7}.rft.xml",
+      "startTime" : "638195110320000000",
+      "endTime" : "638195110320000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{C5389AE5-D2A1-40AA-BAEF-66AFCB210823}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{C5389AE5-D2A1-40AA-BAEF-66AFCB210823}.rft.xml",
+      "startTime" : "638195110580000000",
+      "endTime" : "638195110580000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{4680B6EC-6016-4F03-89C1-096A3A0A9FD4}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{4680B6EC-6016-4F03-89C1-096A3A0A9FD4}.rft.xml",
+      "startTime" : "638195110860000000",
+      "endTime" : "638195110860000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{EB9D986D-0BBD-4A4C-93D9-F0C8D10F7FBB}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{EB9D986D-0BBD-4A4C-93D9-F0C8D10F7FBB}.rft.xml",
+      "startTime" : "638195111270000000",
+      "endTime" : "638195111270000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{4F52DA6B-D322-464E-9D74-D6B8E99AE01E}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{4F52DA6B-D322-464E-9D74-D6B8E99AE01E}.rft.xml",
+      "startTime" : "638195111630000000",
+      "endTime" : "638195111630000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{F6F72220-1067-4AB0-934B-C57208B54381}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{F6F72220-1067-4AB0-934B-C57208B54381}.rft.xml",
+      "startTime" : "638195112280000000",
+      "endTime" : "638195112280000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{DDA9B12E-C6EA-44AA-982A-CC8ECB76388E}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{DDA9B12E-C6EA-44AA-982A-CC8ECB76388E}.rft.xml",
+      "startTime" : "638195114200000000",
+      "endTime" : "638195114200000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{696E6A23-C328-4B59-83EE-7528CF727D57}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{696E6A23-C328-4B59-83EE-7528CF727D57}.rft.xml",
+      "startTime" : "638195116090000000",
+      "endTime" : "638195116090000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{5BE10672-7D46-4E0E-8340-DB21C9B84943}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{5BE10672-7D46-4E0E-8340-DB21C9B84943}.rft.xml",
+      "startTime" : "638195116400000000",
+      "endTime" : "638195116400000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{F0187B12-B51C-44AE-9F96-D4DFB28E8BAC}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{F0187B12-B51C-44AE-9F96-D4DFB28E8BAC}.rft.xml",
+      "startTime" : "638195120920000000",
+      "endTime" : "638195120920000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{3B31E897-1E9D-482D-93C6-E99957E80291}",
+      "type" : 1,
+      "status" : 4,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{3B31E897-1E9D-482D-93C6-E99957E80291}.rft.xml",
+      "startTime" : "638195121890000000",
+      "endTime" : "638195121890000000",
+      "validationMessages" : [
+        "The dataset variable 'Raster' is not assigned."
+      ],
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Parameter 'Raster' is missing or invalid. Bind failed in function 'Stretch' [Stretch Function].",
+            "Type" : 100
+          },
+          {
+            "Text" : "Failed.",
+            "Type" : 100
+          }
+        ]
+      }
+    },
+    {
+      "id" : "{CCFAA2BF-5E63-4293-8B33-61AA3B475D20}",
+      "type" : 1,
+      "status" : 2,
+      "name" : "Stretch",
+      "description" : "Enhances an image by adjusting the range of values displayed. This does not alter the underlying pixel values. If a pixel has a value outside of the specified range, it will appear as either the minimum or maximum value.",
+      "rftPath" : "Stretch_{CCFAA2BF-5E63-4293-8B33-61AA3B475D20}.rft.xml",
+      "startTime" : "638195122050000000",
+      "endTime" : "638195122050000000",
+      "remoteJobStateInfo" : {
+        "ID" : "_lcljob",
+        "Status" : 5,
+        "ReturnValue" : "",
+        "Messages" : [
+          {
+            "Text" : "Submitted.",
+            "Type" : 0
+          },
+          {
+            "Text" : "Executing...",
+            "Type" : 0
+          },
+          {
+            "Text" : "Succeeded.",
+            "Type" : 0
+          }
+        ]
+      }
+    }
+  ]
+}

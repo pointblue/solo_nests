@@ -19,9 +19,25 @@ solo_obs_2223 <-
   read_csv('data/solonest_obs_data_entry_2223.csv') %>% 
   left_join(solo_outcome, by = 'nestid')
 
-rm(solo_outcome)
+# explore -----------------------------------------------------------------
 
-# analyses ----------------------------------------------------------------
+# find cases of ambiguous nest identity
+solo_obs_2223 %>% 
+  pull(status) %>% 
+  unique()
+
+# filter out unambiguous obs.
+
+solo_obs_2223 %>% 
+  # ambiguous cases are unlikely to be labeled as INC BR OR G
+  filter(!status %in% c('INC', 'BR', 'G', 'P/INC', 'P/WBN', 'WBN')) %>% #View()
+  # ambiguous cases unlikely to be clearly MT or 'NBS
+  filter(!status %in% c('MT', 'NBS')) # %>% View()
+
+
+# format ----------------------------------------------------------------
+
+## active solo nests -------------------------------------------------------
 
 # 1. find solo nests which were active in 2223
 active_solo_2223 <- 
@@ -51,32 +67,245 @@ active_solo_2223 <-
   # identify which birds were successful last year
   left_join(
     as_tibble(solo_rs) %>%
-      select(nestid = `...1`,
-             crChx = confirmCR),
+      transmute(nestid = `...1`,
+                    crChx = confirmCR,
+                    kaChx = if_else(
+                      is.na(kaChx),
+                      0,
+                      kaChx)),
     by = 'nestid') %>% 
-  mutate(lySuccess = 
+  mutate(CrSuccess = 
            if_else(
              crChx > 0,
              1,
+             0),
+         BrSuccess = 
+           if_else(
+             kaChx > 0,
+             1,
              0)) %>% 
-  dplyr::select(-c(crChx))
-  
-# run a fisher exact test to see if successful breeding in 2122 influences liklihood of solo breed in 2223
-solo_rs %>% 
-  mutate(nestid = `...1`) %>% 
-  select(c(nestid, outcome2122 = binaryCR)) %>% 
-  full_join(
-    active_solo_2223 %>% 
-      dplyr::select(nestid, breeding2223 = effort)) %>% 
-  mutate(breeding2223 = if_else(
-           is.na(breeding2223),
-         0,
-         1)) %>% 
-  group_by(outcome2122, breeding2223) %>% 
-  summarize(count = n())
-  
+  dplyr::select(-c(crChx, kaChx))
+
+
+## occupied solo nests -----------------------------------------------------
+
+# 1.5: generate a list of those that were not active
+occupied_solo_2223 <- 
+  solo_obs_2223 %>%
+  filter(!nestid %in% active_solo_2223$nestid) %>% 
+  # remove all nests where nobody was seen
+  filter(!is.na(status) & !status %in% c('MT', 'UNK', 'INC?', 'NBS', 'FAIL?')) %>% 
+  transmute(
+    nestid = nestid,
+    effort = 9,
+    chx = 0) %>% 
+  left_join(
+    as_tibble(solo_rs) %>%
+      transmute(nestid = `...1`,
+                crChx = confirmCR,
+                kaChx = if_else(
+                  is.na(kaChx),
+                  0,
+                  kaChx)),
+    by = 'nestid') %>% 
+  mutate(CrSuccess = 
+           if_else(
+             crChx > 0,
+             1,
+             0),
+         BrSuccess = 
+           if_else(
+             kaChx > 0,
+             1,
+             0),
+         active2223 = 0) %>% 
+  dplyr::select(-c(crChx, kaChx)) %>%
+  distinct() %>%
+  left_join(solo_outcome, by = 'nestid') %>% 
+  rename(breeder2122 = breeder) %>% 
+  rbind((active_solo_2223 %>% 
+          mutate(active2223 = 1)))
+
+
+# compiled ----------------------------------------------------------------
+
+solo_resight_22 <-
+  tibble(
+    nestid = c(1,3:6,8:50)) %>% 
+  mutate(
+    reOcc = if_else(
+      nestid %in% (occupied_solo_2223 %>% pull(nestid)),
+      1,
+      0),
+    reAct = if_else(
+      nestid %in% (active_solo_2223 %>% pull(nestid)),
+      1,
+      0),
+    ambig = if_else(
+      nestid %in% c(4, 13, 19, 42, 9, 10),
+      1,
+      0)) %>% 
+  # remove nest with unknown outcome
+  filter(nestid != 27)
+
+
+# analyses ----------------------------------------------------------------
 
 # now manually calculate the fisher's exact test statistic based on the formula described here: 
 # https://en.wikipedia.org/wiki/Fisher%27s_exact_test
 
-(factorial(15) * factorial(21) * factorial(11) * factorial(25)) / (factorial(6) * factorial(9) * factorial(16) * factorial(36))
+## success > occup. -----------------------------------------------------
+# were active nests more likely to be re-occupied?
+solo_rs %>% 
+  mutate(nestid = `...1`) %>% 
+  dplyr::select(c(nestid, CrSucc2122 = confirmCR, BrSucc2122 = kaChx)) %>% 
+  # bind backwards to include nests which were not active in 2022
+  full_join(
+    solo_resight_22 %>% 
+      dplyr::select(nestid, occupied2223 = reOcc)) %>% 
+  # success of non-breeders to zero success
+  mutate(CrSucc2122 = case_when(
+    is.na(CrSucc2122) ~ 0,
+    CrSucc2122 == 0 ~ 0,
+    CrSucc2122 >= 1 ~ 1),
+    BrSucc2122 = case_when(
+      is.na(BrSucc2122) ~ 0,
+      BrSucc2122 == 0 ~ 0,
+      TRUE ~ 1)) %>%  
+  # remove ambiguous nests
+  filter(!nestid %in% 
+           (solo_resight_22 %>%
+           filter(ambig == 1) %>%
+           pull(nestid))) %>%
+  # choose success metric and count outcomes in each category
+  group_by(BrSucc2122, occupied2223) %>% 
+  summarize(count = n())
+
+# creche success
+(factorial(20) * factorial(21) * factorial(11) * factorial(30)) / (factorial(4) * factorial(7) * factorial(13) * factorial(17) * factorial(41))
+# p = 0.13
+# assumed success
+(factorial(20) * factorial(21) * factorial(18) * factorial(23)) / (factorial(14) * factorial(4) * factorial(7) * factorial(16) * factorial(41))
+# p = 0.002
+
+## success > active -----------------------------------------------------
+# does successful breeding in 2122 influences liklihood of solo breed in 2223
+solo_rs %>% 
+  mutate(nestid = `...1`) %>% 
+  dplyr::select(c(nestid, CrSucc2122 = confirmCR, BrSucc2122 = kaChx)) %>% 
+  # bind backwards to include nests which were not active in 2022
+  full_join(
+    solo_resight_22 %>% 
+      dplyr::select(nestid, breeding2223 = reAct)) %>% 
+  # success of non-breeders to zero success
+  mutate(CrSucc2122 = case_when(
+    is.na(CrSucc2122) ~ 0,
+    CrSucc2122 == 0 ~ 0,
+    CrSucc2122 >= 1 ~ 1),
+    BrSucc2122 = case_when(
+      is.na(BrSucc2122) ~ 0,
+      BrSucc2122 == 0 ~ 0,
+      TRUE ~ 1)) %>%  
+  # remove ambiguous nests
+  filter(!nestid %in% 
+           (solo_resight_22 %>%
+              filter(ambig == 1) %>%
+              pull(nestid))) %>%
+  # choose success metric and count outcomes in each category
+  group_by(CrSucc2122, breeding2223) %>% 
+  summarize(count = n())
+  
+# confirmed success
+(factorial(15) * factorial(26) * factorial(11) * factorial(30)) / (factorial(5) * factorial(6) * factorial(9) * factorial(21) * factorial(41))
+# p = 0.104
+# assumed success
+(factorial(15) * factorial(26) * factorial(23) * factorial(18)) / (factorial(12) * factorial(11) * factorial(3) * factorial(15) * factorial(41))
+# p = 0.00987
+
+## active > occup. ---------------------------------------------------------
+solo_rs %>% 
+  transmute(nestid = `...1`, active2122 = 1) %>% 
+  # bind backwards to include nests which were not active in 2022
+  full_join(
+    solo_resight_22 %>% 
+      dplyr::select(nestid, occupied2223 = reOcc)) %>% 
+  # success of non-breeders to zero success
+  mutate(active2122 = if_else(
+    is.na(active2122),
+    0,
+    active2122)) %>%  
+  # choose success metric and count outcomes in each category
+  # remove ambiguous nests
+  filter(!nestid %in% 
+           (solo_resight_22 %>%
+              filter(ambig == 1) %>%
+              pull(nestid))) %>%
+  group_by(active2122, occupied2223) %>% 
+  summarize(count = n())
+
+# active 2122
+(factorial(20) * factorial(22) * factorial(34) * factorial(8)) / (factorial(20) * factorial(14) * factorial(8) * factorial(0) * factorial(42))
+# p = 0.002
+
+## active > active ---------------------------------------------------------
+solo_rs %>% 
+  transmute(nestid = `...1`, active2122 = 1) %>% 
+  # bind backwards to include nests which were not active in 2022
+  full_join(
+    solo_resight_22 %>% 
+      dplyr::select(nestid, breed2223 = reAct)) %>% 
+  # success of non-breeders to zero success
+  mutate(active2122 = if_else(
+    is.na(active2122),
+    0,
+    active2122)) %>%  
+  # choose success metric and count outcomes in each category
+  # remove ambiguous nests
+  filter(!nestid %in% 
+           (solo_resight_22 %>%
+              filter(ambig == 1) %>%
+              pull(nestid))) %>%
+  group_by(active2122, breed2223) %>% 
+  summarize(count = n())
+
+# active 2122
+(factorial(15) * factorial(34) * factorial(27) * factorial(8)) / (factorial(15) * factorial(19) * factorial(0) * factorial(8) * factorial(42))
+# p = 0.018
+
+
+
+## ambiguous nests ---------------------------------------------------------
+
+
+### success > occup. ---------------------------------------------------------
+solo_rs %>% 
+  mutate(nestid = `...1`) %>% 
+  dplyr::select(c(nestid, CrSucc2122 = confirmCR, BrSucc2122 = kaChx)) %>% 
+  # bind backwards to include nests which were not active in 2022
+  full_join(
+    solo_resight_22 %>%
+      mutate(reOcc = if_else(
+        ambig == 1,
+        1,
+        reOcc)) %>% 
+      dplyr::select(nestid, occup.2223 = reOcc)) %>% 
+  # success of non-breeders to zero success
+  mutate(CrSucc2122 = case_when(
+    is.na(CrSucc2122) ~ 0,
+    CrSucc2122 == 0 ~ 0,
+    CrSucc2122 >= 1 ~ 1),
+    BrSucc2122 = case_when(
+      is.na(BrSucc2122) ~ 0,
+      BrSucc2122 == 0 ~ 0,
+      TRUE ~ 1)) %>%  
+  # choose success metric and count outcomes in each category
+  group_by(CrSucc2122, occup.2223) %>% 
+  summarize(count = n())
+
+# confirmed success
+(factorial(26) * factorial(21) * factorial(11) * factorial(36)) / (factorial(19) * factorial(17) * factorial(7) * factorial(4) * factorial(47))
+# p = 0.226
+# assumed success
+(factorial(26) * factorial(21) * factorial(23) * factorial(24)) / (factorial(14) * factorial(10) * factorial(7) * factorial(16) * factorial(47))
+# p = 0.0383
+

@@ -3,200 +3,316 @@
 
 library(tidyverse)
 
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\fish-tags.R)')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\solo_nest.R)')
+source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\solo_comparison.R)')
+source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\size_comparison.R)')
+source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\neighbor_aquisition.R)')
 
 allResight <- read_csv(r'(Z:\Informatics\S031\S0312122\croz2122\bandsearch\allresight_reference_copy.csv)')
 
+# F2 Subcolony Success Values -------------------------------------------
 
+transMort.labels <-
+  tibble(
+    season = c(2016, 2017, 2018, 2019),
+    transMort = as.character(
+      paste(
+        'Δ = ',
+        (-1 * round(fishtagComp$transMort,2))
+        )),
+    x = 1.5,
+    y = c(0.82, 0.93, 0.721, 1.2))
 
-# F1: nest map ----------------------------------------------------------------
+Subcol.Succ <- 
+  fishtagComp %>% 
+  transmute(
+    season = sapply(season, seas_fy),
+    `Success Metric` = 'Brood Success',
+    `Chicks Per Nest` = BrSucc,
+    `Standard Error` = Br.se) %>% 
+  rbind(
+    fishtagComp %>% 
+      transmute(
+        season = sapply(season, seas_fy),
+        `Success Metric` = 'Creching Success',
+        `Chicks Per Nest` = CrSucc,
+        `Standard Error` = CR.se)) %>% 
+  rbind(
+    All.Success %>% 
+      filter(`Nest Type` == 'Subcolony') %>% 
+      transmute(
+        season = 2021,
+        `Success Metric`,
+        `Chicks Per Nest`,
+        `Standard Error`)) %>% 
+  filter(!is.na(`Standard Error`))
 
-fishtagComp %>% 
-  left_join(allResight %>% 
-              select(bandnumb, season, lat, lon) %>%
-              mutate(bandnumb = as.double(bandnumb),
-                     season = as.double(season)
-                     ) %>% # View()
-              filter(lat < 0 & lon > 0),
-            by = c('season', 'bandnumb')) %>% # View()
-  group_by(season, bandnumb) %>%
-  summarize(lat = mean(lat), lon = mean(lon), CR = (crChx >= 1), type = 'Subcolony') %>% 
-  ungroup() %>% 
-  # fill in position of one missing nest
-    mutate(lat = if_else(is.na(lat),
-                         -77.45257,
-                         lat),
-           lon = if_else(is.na(lon),
-                         169.2334,
-                         lon)) %>%  #View()
-  rbind(solo_rs %>% 
-          transmute(season = 2122,
-                 bandnumb = `...1`,
-                 lat = latitude,
-                 lon = longitude,
-                 CR = (confirmCR >= 1),
-                 type = 'Solitary')) %>% #View()
-  ggplot(aes(x = lon, y = lat, color = factor(type))) +
-  geom_jitter() + 
-  labs(x = "Longitude", y = "Latitude") +
-  scale_x_continuous(limits = c(169.215, 169.246)) +
-  scale_y_continuous(limits = c(-77.4625, -77.4475)) +
-  scale_color_manual(values = c('Subcolony' = '#FFCC33', 'Solitary' = '#33CCFF'), name = "Nest Type") +
-  theme_grey()
+# fig.2 <-
+  ggplot(data = Subcol.Succ, aes(x = `Success Metric`,
+                               y = `Chicks Per Nest`,
+                               group = season,
+                               color = factor(season))) +
+  geom_pointrange(aes(ymin =`Chicks Per Nest` - `Standard Error`,
+                      ymax = `Chicks Per Nest` + `Standard Error`),
+                  position = position_dodge(width = -0.35, preserve = 'total')) +
+  geom_line(position = position_dodge(width = -0.35)) +
+  geom_text(data = transMort.labels,
+            aes(x =x,
+                y = y,
+                label = transMort),
+            size = 4,
+            fontface = 'bold',
+            position = position_dodge(width = -0.35)) +
+  scale_color_manual(values = wes_palette("Rushmore1")) +
+  guides(color = 'none') +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 15),
+    axis.text.x = element_text(size = 12),
+    axis.title.y = element_text(size = 15),
+    axis.text.y = element_text(size = 10))
+
+f2.legend <-
+  ggplot(data = Subcol.Succ, 
+         aes(x = `Chicks Per Nest`,
+             y = `Standard Error`,
+             color = factor(season))) +
+  geom_point() + 
+  scale_color_manual(name = 'Season', values = wes_palette("Rushmore1")) +
+  theme_classic()
+
+ggsave('products/figure2/fig2.png', plot = fig.2, device = 'png', width = 9, height = 6, bg = 'transparent')
+
+ggsave('products/figure2/fig2_legend.png', plot = f2.legend, device = 'png', width = 9, height = 6)
 
 
 # F3: Anomaly values ------------------------------------------------------
-solo_comp <-
-  as_tibble(solo_rs) %>%
-  select(bandnumb = `...1`,
-         nuChx = chN,
-         crChx = confirmCR) %>% 
-  mutate(season = 2122) %>% 
-  inner_join(ground_count_avg, by = 'season') %>%
-  mutate(bandnumb = as.double(bandnumb),
-         nuChx = as.double(nuChx),
-         crChx = as.double(crChx),
-         anomaly = crChx - avgSuccess,
-         type = 'Solitary') %>% 
-  rbind(fishtagComp %>%
-          select(-c('nuEgg')) %>% 
-          mutate(type = 'Subcolony')) %>%
-  mutate(type = factor(type, levels = c('Subcolony', 'Solitary'), ordered = TRUE),
-         typeNum = as.numeric(type))
 
-solo_comp %>%
-  mutate(season = factor(season), typeNum = factor(typeNum)) %>% 
-  ggplot(aes(x = anomaly, fill = type)) +
-  geom_histogram(color = 'black', bins = 30) + 
-  labs(x = 'Anomaly (chicks/nest)', y = 'Frequency') +
-  scale_y_continuous(expand = c(0,0)) +
-  scale_x_continuous(expand = c(0,0)) +
-  scale_fill_manual(values = c('Subcolony' = '#FFCC33', 'Solitary' = '#33CCFF'),
-                    name = "Nest Type") +
-  facet_grid(type~.) + 
-  theme_grey() +
-  theme(legend.position = 'bottom')
+# combine both success metrics into a single table for viz
 
-# Inset plot of hatch success
-solo_outcome <- read_csv("data/solo_outcomes.csv") %>%
-  filter(nestid != 'solo27')
-solo_outcome %>%
-  filter(!is.na(chick_n)) %>% 
-  mutate(egg_n = if_else(egg_n == 8,
-                         1,
-                         egg_n),
-         chick_n = if_else(chick_n == 8,
-                           1,
-                           chick_n)) %>% 
-  group_by(egg_n, chick_n) %>% 
-  summarize(n = n()) %>%
-  mutate(prop = n/sum(n)) %>%
-  ungroup() %>% 
-  transmute(nuEgg = egg_n,
-         nuChx = chick_n,
-         n,
-         prop = prop * 0.83333,
-         type = 'Solitary') %>% 
-  filter(nuEgg == 2) %>% 
-  rbind(fishtagComp %>%
-          mutate(nuChx = if_else(nuChx == 8,
-                                 1,
-                                 nuChx)) %>%
-          group_by(nuEgg, nuChx) %>% 
-          summarize(n = n()) %>% 
-          mutate(prop = (n/sum(n)) * 0.613,
-                 type = 'Subcolony') %>% 
-          filter(nuEgg == 2)) %>% 
-  ggplot(aes(x = type, y = prop, fill = factor(nuChx, levels = c(2,1,0), ordered = TRUE))) +
-  geom_bar(stat = 'identity') +
-  scale_fill_viridis(name = 'Hatch Success (n)', discrete = TRUE) +
-  labs(x = 'Nest Type', y = 'Proportion') +
+fig3 <-
+  All.Success %>%
+  ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
+  geom_line(aes(group = `Nest Type`), color = 'white', linetype = 'dashed', alpha = 0.75) +
+  geom_pointrange(aes(ymin = (`Chicks Per Nest` - `Standard Error`),
+                      ymax = (`Chicks Per Nest` + `Standard Error`),
+                      fill = `Nest Type`,
+                      color = `Nest Type`,
+                      shape = `Season`),
+                  size = 0.75,
+                  position = position_dodge(width = 0.075)) +
+  geom_point(data = SubcolCS.Estimates,
+             aes(x = `Success Metric`,
+                 y = `Chicks Per Nest`,
+                 group = `Nest Type`,
+                 fill = `Nest Type`,
+                 color = `Nest Type`,
+                 shape = `Season`),
+             position = position_nudge(x = 0.1),
+             size = 3,
+             alpha = 0.65) +
+  scale_shape_manual(values = c(21, 24)) +
+  scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
+  scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
+  # scale_y_continuous(limits = c(0,1)) +
+  labs(y = 'Nest Success (chicks/nest)', x = 'Success Metric', color = 'Nest Type') +
+  facet_wrap(~`Nest Type`) +
+  # guides(shape = 'none') +
+  theme_classic()  + 
+  theme(axis.title.x = element_text(size = 12),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 10),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 9),
+        strip.text = element_text(size = 12))
+
+  # theme(axis.title.x = element_text(color = 'white', size = 20),
+  #       axis.line.x = element_line(color = 'white'),
+  #       axis.ticks.x = element_line(color = 'white'),
+  #       axis.text.x = element_text(color = 'white', size = 15),
+  #       axis.title.y = element_text(color = 'white', size = 20),
+  #       axis.line.y = element_line(color = 'white'),
+  #       axis.ticks.y = element_line(color = 'white'),
+  #       axis.text.y = element_text(color = 'white', size = 15),
+  #       strip.background = element_rect(fill = 'black'),
+  #       strip.text = element_text(color = 'white', size = 15),
+  #       legend.text = element_text(color = 'white', size = 10),
+  #       legend.title = element_text(color = 'white', size = 15),
+  #       legend.background = element_rect(fill = 'transparent'),
+  #       panel.background = element_rect(fill = 'transparent'),
+  #       plot.background = element_rect(fill = 'transparent'))
+# 
+# ggsave('products/figure3/fig3.1.png', plot = fig3, device = 'png', width = 9, height = 6, bg = 'transparent')
+
+# visuzlize difference in transition mortality
+fig3_subplot <-
+  Transition.Mortality %>%
+  mutate(`Nest Type` = factor(`Nest Type`, levels = c('Solitary', 'Historic Subcolony'), ordered = T)) %>% 
+  filter(Mean == 'y') %>% 
+  ggplot(aes(x = `Nest Type`, y = transMort)) +
+  geom_pointrange(aes(ymin = transMort-std.error,
+                      ymax = transMort+std.error,
+                      fill = `Nest Type`,
+                      color = `Nest Type`,
+                      shape = `Nest Type`),
+                  size = 1) +
+  geom_point(data = Transition.Mortality %>% filter(Mean == 'n'),
+             aes(x = `Nest Type`,
+                 y = transMort,
+                 fill = `Nest Type`,
+                 color = `Nest Type`,
+                 shape = `Nest Type`),
+             alpha = 0.65,
+             size = 4,
+             position = position_nudge(x = 0.075)) +
+  scale_shape_manual(values = c(21, 24)) +
+  scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
+  scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
+  #scale_y_continuous(limits = c(-0.1,0.35)) +
+  geom_hline(yintercept = 0) +
+  # guides(shape = FALSE) +
+  labs(y = 'Transition Mortality (chicks/nest)', x = NULL, color = 'Nest Type') +
+  # facet_wrap(~`Success Type`) +
+  theme_minimal() + 
+  theme(axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 11),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 11))
+
+plot_grid(fig3_subplot, fig3, labels = "AUTO", nrow = 2)
+
+
+fig3_orig <- 
+  All.Success %>%
+  ggplot(aes(x = nestType, y = chxPerNest)) +
+  geom_pointrange(aes(ymin = lowerLimit, ymax = upperLimit, color = `nestType`), position = position_dodge(width = 0.75)) +
+  scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
+  scale_y_continuous(limits = c(0,1)) +
+  labs(y = 'Nest Success (chicks/nest)', x = 'Nest Type', color = 'Nest Type') +
+  facet_wrap(~`Success Type`) +
   theme_classic() +
-  coord_flip() + theme(legend.position = 'bottom') 
+  theme(axis.title.x = element_text(color = 'white', size = 25),
+        axis.line.x = element_line(color = 'white'),
+        axis.ticks.x = element_line(color = 'white'),
+        axis.text.x = element_text(color = 'white', size = 20),
+        axis.title.y = element_text(color = 'white', size = 25),
+        axis.line.y = element_line(color = 'white'),
+        axis.ticks.y = element_line(color = 'white'),
+        axis.text.y = element_text(color = 'white', size = 20),
+        strip.background = element_rect(fill = 'black'),
+        strip.text = element_text(color = 'white', size = 20),
+        legend.text = element_text(color = 'white', size = 10),
+        legend.title = element_text(color = 'white', size = 15),
+        legend.background = element_rect(fill = 'transparent'),
+        legend.position = 'bottom',
+        panel.background = element_rect(fill = 'transparent'),
+        plot.background = element_rect(fill = 'transparent'))
 
 
 # F4: Size distribution ---------------------------------------------------
 
-# faceted plot
-
-fish_size_cr %>%
-  transmute(nestid = as.character(bandnumb),
-            size = FinalCHsize,
-            ch_bandnumb,
-            season,
-            type) %>%
-  rbind(solo_size_cr %>% 
-          mutate(ch_bandnumb = 1)) %>% # pull(size) %>% unique()
-  filter(size != 'UND') %>% 
-  mutate(season = case_when(
-    season == 1617 ~ 2016,
-    season == 1718 ~ 2017,
-    season == 1819 ~ 2018,
-    season == 1920 ~ 2019,
-    season == 2122 ~ 2021
-  ),
-         size = factor(size, levels = c('OR', 'GF', 'GF1', 'GF2', 'MEL', 'MEL1', 'MEL2', 'PA', 'PA+', 'PA++'))) %>% 
-  mutate(z = cut(as.numeric(size), breaks = c(0,1,4,7,9), labels = c('OR', 'GF', 'MEL', 'PA')),
-         type = if_else(type == 1, 'Subcolony', 'Solitary')) %>% # select(size,z) %>% View()
+# plot outcome size frequency
+fig4 <-
+  size_outcome %>% 
+  group_by(type, size) %>% 
+  summarize(count = n(), .groups = 'drop') %>%
+  left_join(
+    (size_outcome %>% 
+       group_by(type) %>% 
+       summarize(total = n(), .groups = 'drop'))) %>% 
+  mutate(perc = (count/total)*100) %>% # View()
   ggplot() +
-  geom_bar(aes(x = z, fill = factor(type, levels = c('Subcolony', 'Solitary'), ordered = TRUE)), color = 'black', position = 'dodge') +
-  labs(x = "Size Class", y = 'Frequency') +
-  scale_x_discrete(expand = c(0,0.5)) + 
-  scale_y_continuous(expand = c(0,0.25)) +
-  scale_fill_manual(values = c('Subcolony' = '#FFCC33', 'Solitary' = '#33CCFF'),
-                    name = "Nest Type") +
-  facet_wrap(~season) + 
-  theme_grey()
+  geom_bar(aes(x = factor(size), y = perc, fill = type), color = 'black', stat = 'Identity') +
+  scale_fill_manual(values = c('Subcolony' = '#33CCFF', 'Solitary' = '#FFCC33'), name = "Nest Type") +
+  scale_x_discrete(expand = c(0.1,0.1)) +
+  scale_y_continuous(expand = c(0,0.1))+
+  labs(y = 'Percentage (%)', x = 'Chick Size Class') +
+  facet_grid(type~.) +
+  guides(fill = 'none')+
+  theme_classic() + 
+  theme(axis.title.x = element_text(size = 15),
+        axis.text.x = element_text(size = 15),
+        axis.title.y = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        strip.text = element_text(size = 15),
+        legend.text = element_text(size = 5),
+        legend.title = element_text(size = 10),
+        legend.background = element_rect(fill = 'transparent'),
+        legend.position = 'bottom',
+        panel.background = element_rect(fill = 'transparent'),
+        plot.background = element_rect(fill = 'transparent'))
 
-# stacked plot
-fish_size_cr %>%
-  transmute(nestid = as.character(bandnumb),
-            size = FinalCHsize,
-            ch_bandnumb,
-            season,
-            type) %>%
-  rbind(solo_size_cr %>% 
-          mutate(ch_bandnumb = 1)) %>% # pull(size) %>% unique()
-  filter(size != 'UND') %>% 
-  mutate(season = case_when(
-    season == 1617 ~ 2016,
-    season == 1718 ~ 2017,
-    season == 1819 ~ 2018,
-    season == 1920 ~ 2019,
-    season == 2122 ~ 2021
-  ),
-  size = factor(size, levels = c('OR', 'GF', 'GF1', 'GF2', 'MEL', 'MEL1', 'MEL2', 'PA', 'PA+', 'PA++'))) %>% 
-  mutate(z = cut(as.numeric(size), breaks = c(0,1,4,7,9), labels = c('A', 'B', 'C', 'D')),
-         type = if_else(type == 1, 'Subcolony', 'Solitary')) %>% # select(size,z) %>% View()
-  group_by(season,z) %>% 
-  summarize(n = n()) %>%
-  pivot_wider(names_from = z, values_from = n) %>%
-  mutate(A = if_else(is.na(A),
-                     as.integer(0),
-                     A)) %>% 
-  rowwise() %>% 
-  mutate(total = sum(A,B,C,D),
-         A = A/total,
-         B = B/total,
-         C = C/total,
-         D = D/total) %>%
-  ungroup() %>% 
-  pivot_longer(!c(season,total),
-               names_to = 'Size',
-               values_to = 'prop') %>% 
-  mutate(Size = case_when(
-    Size == 'A' ~ 'OR', 
-    Size == 'B' ~ 'GF', 
-    Size == 'C' ~ 'MEL',
-    Size == 'D' ~ 'PA'
-  )) %>% 
+ggsave('products/figure4/fig4.png', plot = fig4, device = 'png', width = 6, height = 4, bg = 'transparent')
+
+
+# compare creche date between types
+# center dates around October 1st as start of Adelie penguin breeding season
+fig4_subplot <-
+  size_outcome %>% 
+  mutate(
+    yday = lubridate::yday(date),
+    yday = if_else(
+      yday >= 358,
+      (yday - 358),
+      yday + 7)) %>%
+  mutate() %>% # group_by(type) %>% summarize(min = min(yday), q1 = quantile(yday, 0.25), mean = mean(yday), median = median(yday), q3 = quantile(yday, 0.75), max = max(yday))
+  filter(yday <= 300)  %>% 
   ggplot() +
-  geom_bar(aes(x = factor(season), y = prop, fill = factor(Size, levels = c('PA', 'MEL', 'GF', 'OR'), ordered = TRUE)), stat = 'identity', color = 'black', position = 'stack') +
-  labs(x = "Size Class", y = 'Frequency') +
-  scale_x_discrete(expand = c(0,0.5)) + 
-  scale_y_continuous(expand = c(0,0.025)) +
-  scale_fill_manual(values = c('PA' = "#C77CFF", 'MEL' = "#00BFC4", 'GF' = "#7CAE00", 'OR' = "#F8766D"),
-                      name = "Size Class") + 
-  scale_color_manual(values = c('Subcolony' = '#FFCC33', 'Solitary' = '#33CCFF'),
-                    name = NA)
+  geom_boxplot(aes(x = type, y = yday, fill = type)) +
+  scale_y_continuous(position = 'right') +
+  scale_fill_manual(values = c('Solitary' = '#FFCC33', 'Subcolony' = '#33CCFF'), name = "Nest Type") +
+  labs(x = 'Nest Type', y = 'Days since Median Hatch') +
+  guides(fill = 'none') +
+  # coord_flip() +
+  theme_classic() + 
+  theme(axis.title.x = element_text(size = 15),
+        axis.text.x = element_text(size = 12),
+        axis.title.y = element_text(size = 13),
+        axis.text.y = element_text(size = 15),
+        strip.text = element_text(size = 15),
+        legend.
+        legend.text = element_text(size = 5),
+        legend.title = element_text(size = 10),
+        legend.background = element_rect(fill = 'transparent'),
+        legend.position = 'bottom',
+        panel.background = element_rect(fill = 'transparent'),
+        plot.background = element_rect(fill = 'transparent'))
+
+# ggsave('products/figure4/fig4_subplot.png', plot = fig4_subplot, device = 'png', width = 4, height = 4, bg = 'transparent')
+
+fig4.panel <- plot_grid(fig4, fig4_subplot, rel_widths = c(2,1), labels = "AUTO", ncol = 2)
+
+ggsave('products/figure4/fig4_panel.png', plot = fig4.panel, device = 'png', width = 7, height = 3, bg = 'transparent')
+
+
+# F5: Neighbor Aquisition -------------------------------------------------
+
+neighbor_output <- 
+  summary(n_model2)$coefficients %>%
+  as_tibble() %>% 
+  mutate(outcome = c('Failed Breeder', 'Brood Success', 'Creching Success'),
+         outcome = factor(outcome, levels = c('Failed Breeder', 'Brood Success', 'Creching Success'), ordered = T),
+         level = c(95, 95, 95),
+         lower = confInt.95[,1],
+         upper = confInt.95[,2]) %>% 
+  # duplicate the data w. 90% confInt
+  rbind(
+    summary(n_model2)$coefficients %>%
+      as_tibble() %>% 
+      mutate(outcome = c('Failed Breeder', 'Brood Success', 'Creching Success'),
+             outcome = factor(outcome, levels = c('Failed Breeder', 'Brood Success', 'Creching Success'), ordered = T),
+             level = c(90, 90, 90),
+             lower = confInt.90[,1],
+             upper = confInt.90[,2]))
+
+ggplot() +
+  geom_pointrange(data = (neighbor_output %>%
+                            filter(level == 95)), 
+                  aes(x = outcome, y = Estimate, ymin = lower, ymax = upper), position = position_nudge(x = -0.1), color = 'black') +
+  geom_pointrange(data = (neighbor_output %>%
+                            filter(level == 90)), 
+                  aes(x = outcome, y = Estimate, ymin = lower, ymax = upper), position = position_nudge(x = 0.1), color = 'grey50') +
+  geom_hline(aes(yintercept = 0), linetype = 'dashed') + 
+  labs(x = 'Breeding Outcome in 2021', y = 'Coefficient Estimate') + 
+  theme_classic()

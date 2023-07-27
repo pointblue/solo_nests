@@ -1,0 +1,13 @@
+<ImportMXDLog>	<Messages>
+		<FileName>Z:\Informatics\S031\analyses\aschmidt\subcol_var\GIS\SchmidtEtAl_SubcolonyHabitat_Figure1a_rev_10_08_19_working_Croz_bigger.mxd</FileName>
+		<Message>
+			<Name></Name>
+			<MessageType>Warning</MessageType>
+			<Severity>Medium</Severity>
+			<Description>Grids and graticules imported into ArcGIS Pro may appear differently. Modifications to the default appearance may be required.</Description>
+			<Code>20055</Code>
+			<ComponentName>SchmidtEtAl_SubcolonyHabitat_Figure1a_rev_10_08_19_working_Croz_bigger</ComponentName>
+			<ComponentType>Layout</ComponentType>
+</Message>
+</Messages>
+</ImportMXDLog>

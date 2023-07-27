@@ -1,0 +1,22 @@
+<ImportMXDLog>	<Messages>
+		<FileName>Z:\Informatics\S031\analyses\aschmidt\subcol_var\GIS\SchmidtEtAl_SubcolonyHabitat_Figure1a_rev2_working.mxd</FileName>
+		<Message>
+			<Name></Name>
+			<MessageType>Error</MessageType>
+			<Severity>High</Severity>
+			<Description>Layer&apos;s data source is inaccessible</Description>
+			<Code>00003</Code>
+			<ComponentName>royds_selected_subcol_2014</ComponentName>
+			<ComponentType>Layer</ComponentType>
+</Message>
+		<Message>
+			<Name></Name>
+			<MessageType>Warning</MessageType>
+			<Severity>Medium</Severity>
+			<Description>Grids and graticules imported into ArcGIS Pro may appear differently. Modifications to the default appearance may be required.</Description>
+			<Code>20055</Code>
+			<ComponentName>SchmidtEtAl_SubcolonyHabitat_Figure1a_rev2_working</ComponentName>
+			<ComponentType>Layout</ComponentType>
+</Message>
+</Messages>
+</ImportMXDLog>
