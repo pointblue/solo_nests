@@ -5,7 +5,7 @@ library(tidyverse)
 library(MASS)
 
 source('code/cleaning/known_age.R')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\fish-tags.R)')
+source('code/cleaning/fish-tags.R')
 source('code/cleaning/solo_nest.R')
 
 # size from ka outcome record

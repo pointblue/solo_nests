@@ -28,7 +28,7 @@ rawFish <-
 
 # Load data on all monitored GDR birds (2016-2018)
 all.gdr <- 
-  read_csv(r"(Z:\Informatics\S031\analyses\solo_nests\data\croz_royds_gdr_depl_all_v2021-08-27.csv)") %>% 
+  read_csv('data/croz_royds_gdr_depl_all_v2021-08-27.csv') %>% 
   # select only birds from crozier
   filter(br_col == 'CROZ') 
 
