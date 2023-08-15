@@ -18,7 +18,7 @@ transMort.labels <-
     transMort = as.character(
       paste(
         'Δ = ',
-        (-1 * round(fishtagComp$transMort,2))
+        (1 * round(fishtagComp$transMort,2))
         )),
     x = 1.5,
     y = c(0.82, 0.93, 0.721, 1.2))
@@ -63,7 +63,7 @@ Subcol.Succ <-
             size = 4,
             fontface = 'bold',
             position = position_dodge(width = -0.35)) +
-  scale_color_manual(values = wes_palette("Rushmore1")) +
+  scale_color_manual(values = c("#A8780DFF", "#DF2A92FF", "#7E71F0FF", "#0C987DFF", "#CB593CFF")) +
   guides(color = 'none') +
   theme_minimal() +
   theme(
@@ -78,7 +78,7 @@ f2.legend <-
              y = `Standard Error`,
              color = factor(season))) +
   geom_point() + 
-  scale_color_manual(name = 'Season', values = wes_palette("Rushmore1")) +
+  scale_color_manual(name = 'Season', values = c("#A8780DFF", "#DF2A92FF", "#7E71F0FF", "#0C987DFF", "#CB593CFF")) +
   theme_classic()
 
 ggsave('products/figure2/fig2.png', plot = fig.2, device = 'png', width = 9, height = 6, bg = 'transparent')
