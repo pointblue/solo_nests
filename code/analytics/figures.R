@@ -88,9 +88,20 @@ ggsave('products/figure2/fig2_legend.png', plot = f2.legend, device = 'png', wid
 
 # F3: Anomaly values ------------------------------------------------------
 
+F3.transMort.labels <-
+  tibble(
+    `Nest Type` = c('Solitary', 'Subcolony'),
+    transMort = as.character(
+      paste(
+        'Δ = ',
+        (1 * round(slice_head(Transition.Mortality, n = 2)$transMort,2))
+      )),
+    x = c(1.8,1.6),
+    y = c(0.56, 0.75))
+
 # combine both success metrics into a single table for viz
 
-fig3 <-
+# fig3 <-
   All.Success %>%
   ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
   geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
@@ -111,7 +122,15 @@ fig3 <-
              position = position_nudge(x = 0.1),
              size = 3,
              alpha = 0.65) +
-  scale_shape_manual(values = c(21, 24)) +
+  geom_text(data = F3.transMort.labels,
+            aes(x =x,
+                y = y,
+                label = transMort,
+                color = `Nest Type`,),
+            size = 4,
+            fontface = 'bold',
+            position = position_dodge(width = -0.35)) +
+  scale_shape_manual(values = c(21, 23)) +
   scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
   scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
   # scale_y_continuous(limits = c(0,1)) +
