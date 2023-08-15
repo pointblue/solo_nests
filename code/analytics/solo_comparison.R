@@ -196,9 +196,9 @@ Transition.Mortality <-
   tibble(
     season = c(2021, 2021, fishtagComp$season),
     `Nest Type` = c('Solitary', 'Historic Subcolony', 'Historic Subcolony', 'Historic Subcolony', 'Historic Subcolony', 'Historic Subcolony'),
-    transMort = c(-1 * SoloTransMort$mean,
-                  -1 * mean(fishtagComp$transMort),
-                  -1 *fishtagComp$transMort),
+    transMort = c(1 * SoloTransMort$mean,
+                  1 * mean(fishtagComp$transMort),
+                  1 *fishtagComp$transMort),
     std.error = c(SoloTransMort$se, NA, NA, NA, NA, NA),
     Mean = c('y', 'y', 'n', 'n', 'n', 'n')) # is this value observed (obs) or estimated (est)
 
