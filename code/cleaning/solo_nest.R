@@ -168,7 +168,8 @@ rm(yes,no)
 neighbs <- raw_solo %>% 
   group_by(nestid) %>% 
   summarize(prop_neighbs = mean(neighbor_y),
-            neighbs_yn = Mode(neighbor_y)
+            neighbs_yn = Mode(neighbor_y),
+            max_neighbs = max(n_neighbors)
   )
 
 solo_rs <- left_join(solo_rs, neighbs, by = ("nestid"))

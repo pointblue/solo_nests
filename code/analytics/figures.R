@@ -2,10 +2,11 @@
 # setup -------------------------------------------------------------------
 
 library(tidyverse)
+library(cowplot)
 
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\solo_comparison.R)')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\size_comparison.R)')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\analytics\neighbor_aquisition.R)')
+source('code/analytics/solo_comparison.R')
+source('code/analytics/size_comparison.R')
+source('code/analytics/neighbor_aquisition.R')
 
 allResight <- read_csv(r'(Z:\Informatics\S031\S0312122\croz2122\bandsearch\allresight_reference_copy.csv)')
 
@@ -92,7 +93,7 @@ ggsave('products/figure2/fig2_legend.png', plot = f2.legend, device = 'png', wid
 fig3 <-
   All.Success %>%
   ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
-  geom_line(aes(group = `Nest Type`), color = 'white', linetype = 'dashed', alpha = 0.75) +
+  geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
   geom_pointrange(aes(ymin = (`Chicks Per Nest` - `Standard Error`),
                       ymax = (`Chicks Per Nest` + `Standard Error`),
                       fill = `Nest Type`,
@@ -310,9 +311,9 @@ ggplot() +
   geom_pointrange(data = (neighbor_output %>%
                             filter(level == 95)), 
                   aes(x = outcome, y = Estimate, ymin = lower, ymax = upper), position = position_nudge(x = -0.1), color = 'black') +
-  geom_pointrange(data = (neighbor_output %>%
-                            filter(level == 90)), 
-                  aes(x = outcome, y = Estimate, ymin = lower, ymax = upper), position = position_nudge(x = 0.1), color = 'grey50') +
+  # geom_pointrange(data = (neighbor_output %>%
+  #                           filter(level == 90)), 
+  #                 aes(x = outcome, y = Estimate, ymin = lower, ymax = upper), position = position_nudge(x = 0.1), color = 'grey50') +
   geom_hline(aes(yintercept = 0), linetype = 'dashed') + 
   labs(x = 'Breeding Outcome in 2021', y = 'Coefficient Estimate') + 
   theme_classic()

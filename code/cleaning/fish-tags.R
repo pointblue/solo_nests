@@ -230,26 +230,26 @@ ftSizeCR %>%
 
 # ground count data ----------------------------------------------------------------
 
-# chxCount <- 
+# chxCount <-
 #   read_csv('Z:/Informatics/S031/S0312122/Antarctica_EOS_report/data/croz_chick_count_compiled_v2022-04-20.csv')
-# adultCount <- 
+# adultCount <-
 #   read_csv('Z:/Informatics/S031/S0312122/Antarctica_EOS_report/data/croz_adult_count_compiled_v2022-04-20.csv')
 # 
 # ground_count <-
 #   # pair active nests with number of chicks
 #   full_join(chxCount, adultCount, by = c('season', 'subcol')) %>%
-#   
+# 
 #   # select important variables
 #   dplyr::select(colony = col.x, season, subCol = subcol, activeCt = active_ct, chCt = ch_ct) %>%
-#   
+# 
 #   # find years of interst
 #   filter(season >= 2016 & season != 2020) %>%
-#   
+# 
 #   # calculate average nest success in each subcolony
 #   mutate(avgSuccess = chCt/activeCt)
 # 
 # # merge subCol 21/24 in 2016 - 2017
-# ground_count <- 
+# ground_count <-
 #   ground_count %>%
 #   filter(season == 2016 | season == 2017) %>%
 #   filter(subCol == "21" | subCol == '24' | subCol == '21/24' | subCol == '24-21') %>%
@@ -257,18 +257,18 @@ ftSizeCR %>%
 #   group_by(season, subCol) %>%
 #   mutate(colony = 'croz', activeCt = sum(activeCt, na.rm = TRUE), chCt = sum(chCt, na.rm = TRUE), avgSuccess = (chCt / activeCt)) %>%
 #   distinct() %>%
-#   rbind(ground_count %>% 
+#   rbind(ground_count %>%
 #           filter(subCol != "21" & subCol != '24' & subCol != '21/24' & subCol != '24-21'))
 # 
 # # find the average success within each year across all 30 sampled subcolonies
-# ground_count_avg <- 
+# ground_count_avg <-
 #   ground_count %>%
 #   filter(!is.na(chCt) & !is.na(activeCt)) %>%
 #   group_by(season) %>%
 #   summarize(activeCt = sum(activeCt),
 #             chCt = sum(chCt),
 #             avgSuccess = mean(avgSuccess)) #%>% filter(season != 2122) %>% summarize(m = mean(activeCt), s = sd(activeCt))
-# 
+# # 
 # # change season values to match fish-tag data
 #  ground_count_avg$season[ground_count_avg$season == 2016] <- 1617
 #  ground_count_avg$season[ground_count_avg$season == 2017] <- 1718

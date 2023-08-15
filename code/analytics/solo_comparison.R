@@ -6,9 +6,9 @@
 library(tidyverse)
 library(ggpubr)
 
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\fish-tags.R)')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\solo_nest.R)')
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\known_age.R)')
+source('code/cleaning/fish-tags.R')
+source('code/cleaning/solo_nest.R')
+source('code/cleaning/known_age.R')
 
 # create an object with solo nest outcomes and historic fishtag nest outcomes
 # solo_comp <-

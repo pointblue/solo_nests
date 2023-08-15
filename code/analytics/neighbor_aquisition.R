@@ -56,7 +56,13 @@ neighbs <-
     as.numeric(max_neighbs))) %>% 
   filter(!is.na(max_neighbs)) %>% 
   # select only re-occupied nests
-  filter(nestid %in% (test %>% filter(reOcc == 1) %>% pull(nestid)))
+  filter(nestid %in% (test %>% filter(reOcc == 1) %>% pull(nestid))) %>% 
+  # bind the maximum number of neighbors observed at each nest in 2021
+  left_join(
+    (solo_rs %>% 
+       dplyr::select(nestid = `...1`, neighbs_21 = max_neighbs))) %>% 
+  mutate(
+    delta_neighbs = max_neighbs - neighbs_21)
 
 # this will produce two scary warnings,
 # 1. caused by cases where no neighbor data was observed for a nest (all NAs)
@@ -72,7 +78,7 @@ neighb_mod <-
   left_join(outcome_cats, by = 'nestid')
 
 n_model2 <- 
-  lm(max_neighbs ~ outcome, data = neighb_mod)
+  lm(delta_neighbs ~ outcome, data = neighb_mod)
 
 summary(n_model2)
 
