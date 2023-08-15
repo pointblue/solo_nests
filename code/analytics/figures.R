@@ -271,27 +271,26 @@ ggsave('products/figure4/fig4.png', plot = fig4, device = 'png', width = 6, heig
 fig4_subplot <-
   size_outcome %>% 
   mutate(
+    type = factor(type,levels = c('Subcolony', 'Solitary')),
     yday = lubridate::yday(date),
     yday = if_else(
       yday >= 358,
       (yday - 358),
-      yday + 7)) %>%
-  mutate() %>% # group_by(type) %>% summarize(min = min(yday), q1 = quantile(yday, 0.25), mean = mean(yday), median = median(yday), q3 = quantile(yday, 0.75), max = max(yday))
-  filter(yday <= 300)  %>% 
+      yday + 7)) %>% # group_by(type) %>% summarize(min = min(yday), q1 = quantile(yday, 0.25), mean = mean(yday), median = median(yday), q3 = quantile(yday, 0.75), max = max(yday))
+  filter(yday <= 300)  %>% # remove dates which are too early to represent accurate data
   ggplot() +
   geom_boxplot(aes(x = type, y = yday, fill = type)) +
-  scale_y_continuous(position = 'right') +
-  scale_fill_manual(values = c('Solitary' = '#FFCC33', 'Subcolony' = '#33CCFF'), name = "Nest Type") +
-  labs(x = 'Nest Type', y = 'Days since Median Hatch') +
+  scale_fill_manual(values = c('Subcolony' = '#33CCFF', 'Solitary' = '#FFCC33'), name = "Nest Type") +
+  coord_flip() +
+  labs(x = NULL, y = 'Days since Median Hatch') +
   guides(fill = 'none') +
   # coord_flip() +
   theme_classic() + 
   theme(axis.title.x = element_text(size = 15),
         axis.text.x = element_text(size = 12),
-        axis.title.y = element_text(size = 13),
-        axis.text.y = element_text(size = 15),
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
         strip.text = element_text(size = 15),
-        legend.
         legend.text = element_text(size = 5),
         legend.title = element_text(size = 10),
         legend.background = element_rect(fill = 'transparent'),
@@ -301,7 +300,13 @@ fig4_subplot <-
 
 # ggsave('products/figure4/fig4_subplot.png', plot = fig4_subplot, device = 'png', width = 4, height = 4, bg = 'transparent')
 
-fig4.panel <- plot_grid(fig4, fig4_subplot, rel_widths = c(2,1), labels = "AUTO", ncol = 2)
+# fig4.panel <- 
+  plot_grid(fig4,
+            fig4_subplot,
+            rel_widths = c(2,1),
+            labels = paste0(c('A', 'B')),
+            hjust = -1.05,
+            ncol = 2)
 
 ggsave('products/figure4/fig4_panel.png', plot = fig4.panel, device = 'png', width = 7, height = 3, bg = 'transparent')
 
