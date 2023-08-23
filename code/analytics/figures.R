@@ -101,7 +101,7 @@ F3.transMort.labels <-
 
 # combine both success metrics into a single table for viz
 
-# fig3 <-
+fig3 <-
   All.Success %>%
   ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
   geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
@@ -341,3 +341,92 @@ ggplot() +
   geom_hline(aes(yintercept = 0), linetype = 'dashed') + 
   labs(x = 'Breeding Outcome in 2021', y = 'Coefficient Estimate') + 
   theme_classic()
+
+
+# fig3 alternate ----------------------------------------------------------
+
+transMort.labels <-
+  tibble(
+    Season = c(1617, 1718, 1819, 1920),
+    transMort = as.character(
+      paste0(
+        'Δ', Season,  '= ',
+        (1 * round(fishtagComp$transMort,2))
+      )),
+    x = c(1.62, 1.5, 1.69, 1.35),
+    y = c(0.73, 0.8, 0.65, 0.62))
+
+# fig3 <-
+All.Success %>%
+  mutate(
+    Season = if_else(
+      `Nest Type` == 'Subcolony',
+      '2021sub',
+      '2021solo'),
+    `Success Metric` = if_else(
+      `Success Metric` == 'Brood Success',
+      1,
+      2)) %>%  
+  ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
+  geom_point(data = SubcolCS.Estimates %>%
+               mutate(Season = season,
+                      `Success Metric` = if_else(
+                        `Success Metric` == 'Brood Success',
+                        1,
+                        1.9)) %>% 
+               rbind(tibble(
+                 `Nest Type` = 'Subcolony',
+                 season = c(1617,1718,1819,1920),
+                 `Success Metric` = 1, 
+                 `Chicks Per Nest` = 0.735,
+                 Season = c(1617,1718,1819,1920))),
+             aes(x = `Success Metric`,
+                 y = `Chicks Per Nest`,
+                 group = `Nest Type`,
+                 fill = factor(`Season`),
+                 color = factor(`Season`)),
+             # position = position_nudge(x = 0.1),
+             size = 3,
+             alpha = 0.75) +
+  geom_line(data = SubcolCS.Estimates %>%
+              mutate(Season = season,
+                     `Success Metric` = if_else(
+                       `Success Metric` == 'Brood Success',
+                       1,
+                       1.9)) %>% 
+              rbind(tibble(
+                `Nest Type` = 'Subcolony',
+                season = c(1617,1718,1819,1920),
+                `Success Metric` = 1, 
+                `Chicks Per Nest` = 0.735,
+                Season = c(1617,1718,1819,1920))),
+            aes(x = `Success Metric`,
+                y = `Chicks Per Nest`,
+                group = `Season`,
+                color = factor(`Season`)),
+            # position = position_nudge(x = 0.1),
+            alpha = 0.35) +
+  geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
+  geom_pointrange(aes(ymin = (`Chicks Per Nest` - `Standard Error`),
+                      ymax = (`Chicks Per Nest` + `Standard Error`),
+                      fill = factor(`Season`),
+                      color = factor(`Season`)),
+                  size = 0.75) +
+geom_text(data = transMort.labels %>% mutate(`Nest Type` = 'Subcolony'),
+          aes(x =x,
+              y = y,
+              label = transMort,
+              color = factor(Season)),
+          size = 3) +
+  scale_color_manual(values = c("#A8780DFF", "#DF2A92FF", "#7E71F0FF", "#0C987DFF", "#FFCC33", "#33CCFF")) + 
+  labs(y = 'Nest Success (chicks/nest)', x = 'Success Metric', color = 'Nest Type') +
+  facet_wrap(~`Nest Type`) +
+  # guides(shape = 'none') +
+  theme_classic()  + 
+  theme(axis.title.x = element_text(size = 12),
+        axis.text.x = element_text(size = 10),
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 10),
+        legend.text = element_text(size = 7),
+        legend.title = element_text(size = 9),
+        strip.text = element_text(size = 12))

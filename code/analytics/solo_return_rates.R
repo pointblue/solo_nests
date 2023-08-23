@@ -4,7 +4,7 @@
 library(tidyverse)
 
 # load solo data from 2122
-source(r'(Z:\Informatics\S031\analyses\solo_nests\code\cleaning\solo_nest.R)')
+source('code/cleaning/solo_nest.R')
 
 solo_outcome <- read_csv("data/solo_outcomes.csv") %>% 
   separate(nestid, 
@@ -299,7 +299,7 @@ solo_rs %>%
       BrSucc2122 == 0 ~ 0,
       TRUE ~ 1)) %>%  
   # choose success metric and count outcomes in each category
-  group_by(CrSucc2122, occup.2223) %>% 
+  group_by(BrSucc2122, occup.2223) %>% 
   summarize(count = n())
 
 # confirmed success

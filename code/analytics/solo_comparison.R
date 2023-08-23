@@ -158,7 +158,7 @@ All.Success <-
       'Solitary'),
     `Success Metric` = 'Brood Success',
     # is this value observed (obs) or estimated (est)
-    `Season` = '2021') %>% 
+    `Data` = 'Observed') %>% 
   rbind(
     tibble(
       `Nest Type` = c('Solitary', 'Subcolony'),
@@ -166,7 +166,7 @@ All.Success <-
       `Chicks Per Nest` = c(Creche.Success.2021$Avg.Solo.Creche.Success,
                             Creche.Success.2021$Mean.Estimated.Subcol.Creche.Success),
       `Standard Error` = c(Creche.Success.2021$SE.Solo.Creche.Success, NA),
-      `Season` = c('2021', 'Historic')))
+      `Data` = c('Observed', 'Expected')))
 
 # document transition mortality
 # standard error of transmort for solo nests
@@ -190,7 +190,7 @@ SubcolCS.Estimates <-
     season = fishtagComp$season,
     `Success Metric` = 'Creching Success',
     `Chicks Per Nest` = All.Success$`Chicks Per Nest`[1] - fishtagComp$transMort,
-    `Season` = 'Historic')
+    `Data` = 'Expected')
 
 Transition.Mortality <-
   tibble(
