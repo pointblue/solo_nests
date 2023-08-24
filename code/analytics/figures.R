@@ -109,7 +109,7 @@ fig3 <-
                       ymax = (`Chicks Per Nest` + `Standard Error`),
                       fill = `Nest Type`,
                       color = `Nest Type`,
-                      shape = `Season`),
+                      shape = `Data`),
                   size = 0.75,
                   position = position_dodge(width = 0.075)) +
   geom_point(data = SubcolCS.Estimates,
@@ -118,7 +118,7 @@ fig3 <-
                  group = `Nest Type`,
                  fill = `Nest Type`,
                  color = `Nest Type`,
-                 shape = `Season`),
+                 shape = `Data`),
              position = position_nudge(x = 0.1),
              size = 3,
              alpha = 0.65) +
@@ -130,13 +130,12 @@ fig3 <-
             size = 4,
             fontface = 'bold',
             position = position_dodge(width = -0.35)) +
-  scale_shape_manual(values = c(21, 23)) +
+  scale_shape_manual(values = c(23, 21), name = NULL) +
   scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
   scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
   # scale_y_continuous(limits = c(0,1)) +
   labs(y = 'Nest Success (chicks/nest)', x = 'Success Metric', color = 'Nest Type') +
   facet_wrap(~`Nest Type`) +
-  # guides(shape = 'none') +
   theme_classic()  + 
   theme(axis.title.x = element_text(size = 12),
         axis.text.x = element_text(size = 10),

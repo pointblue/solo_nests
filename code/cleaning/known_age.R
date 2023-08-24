@@ -18,7 +18,7 @@ ka_outcome <- read_csv("data/ka_nest_outcomes21.csv")
 # filter out non-breeders
 ka_outcome_br <- 
   ka_outcome %>%
-  filter(result != "UNK") %>% 
+  filter(result != "UNK") %>% # pull(result) %>% unique()
   # transform character outcome to numeric factor
   mutate(binaryKA = if_else(
     result == 'FAIL',
@@ -34,7 +34,7 @@ ka_outcome_br <-
       chick1size,
       chick2size)) 
 
-# get most common nest location
+# get nest location
 ka_locs <- 
   initial_ka_obs %>%
   group_by(bandnumb) %>%
@@ -116,38 +116,6 @@ initial_ka_obs %>%
 
 
 # KA chick size ----------------------------------------------------------------
-
-# size based on resight file
-ka_size_resight <-
-  tibble(initial_ka_obs) %>%
-  dplyr::select(c(nestid = bandnumb, status, date, chick1size, chick2size, notes)) %>%
-  pivot_longer(cols = c(chick1size, chick2size),
-               names_to = 'chick',
-               values_to = 'size') %>% 
-  mutate(chick = if_else(
-    chick == 'chick1size', 
-    1,
-    2),
-    date = lubridate::mdy(date)) %>% 
-  filter(!is.na(size)) %>% 
-  group_by(nestid, chick) %>%
-  filter(date == max(date)) %>% 
-  mutate(type = 'ka',
-         size = case_when(
-           size == 'OR' ~ 'OR1',
-           size == 'MEL' ~ 'MEL1',
-           TRUE ~ size),
-         size = factor(size,
-                       levels = c( 'LEM',
-                                   'OR1',
-                                   'OR2',
-                                   'GF1',
-                                   'GF2',
-                                   'MEL1',
-                                   'MEL2',
-                                   'PA',
-                                   'PA+'),
-                       ordered = T))
 
 ka_size_outcome <-
   tibble(ka_outcome_br) %>% 
