@@ -8,7 +8,7 @@ source('code/analytics/solo_comparison.R')
 source('code/analytics/size_comparison.R')
 source('code/analytics/neighbor_aquisition.R')
 
-allResight <- read_csv(r'(Z:\Informatics\S031\S0312122\croz2122\bandsearch\allresight_reference_copy.csv)')
+allResight <- read_csv('data/allresight_reference_copy.csv')
 
 # F2 Subcolony Success Values -------------------------------------------
 
