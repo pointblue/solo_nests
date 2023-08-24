@@ -19,7 +19,7 @@ find_fishtag <-
       warning('Season argument does not match resight file')}
     
     fishtags <- 
-      fishtagComp %>% 
+      fishtagAll %>% 
       ungroup() %>% 
       filter(season == year) %>%  
       pull(bandnumb) %>% 
