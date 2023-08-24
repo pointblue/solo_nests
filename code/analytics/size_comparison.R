@@ -73,7 +73,7 @@ summary(size_model)
 
 # convert t-value to p-value
 df <- size_model$edf # effective degrees of freedom used in modeling
-t <- summary(size_model)$coefficients['type.L', "t value"]
+t <- summary(size_model)$coefficients['yday', "t value"]
 # p-value for type (ka(0) vs. solo(1))
 p <- 2 * (1 - pt(abs(t), df))
 
@@ -84,7 +84,6 @@ predicted_size <-
     prediction = predict(size_model, newdata = model_data))
 
 # all solos predited to be PA +, all ka predicted GF1
-
 
 # difference in date ------------------------------------------------------
 group0 <- 

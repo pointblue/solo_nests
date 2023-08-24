@@ -178,13 +178,13 @@ solo_rs %>%
            filter(ambig == 1) %>%
            pull(nestid))) %>%
   # choose success metric and count outcomes in each category
-  group_by(BrSucc2122, occupied2223) %>% 
+  group_by(CrSucc2122, occupied2223) %>% 
   summarize(count = n())
 
 # creche success
 (factorial(20) * factorial(21) * factorial(11) * factorial(30)) / (factorial(4) * factorial(7) * factorial(13) * factorial(17) * factorial(41))
 # p = 0.13
-# assumed success
+# brood success
 (factorial(20) * factorial(21) * factorial(18) * factorial(23)) / (factorial(14) * factorial(4) * factorial(7) * factorial(16) * factorial(41))
 # p = 0.002
 
@@ -212,13 +212,13 @@ solo_rs %>%
               filter(ambig == 1) %>%
               pull(nestid))) %>%
   # choose success metric and count outcomes in each category
-  group_by(CrSucc2122, breeding2223) %>% 
+  group_by(BrSucc2122, breeding2223) %>% 
   summarize(count = n())
   
-# confirmed success
+# creching success
 (factorial(15) * factorial(26) * factorial(11) * factorial(30)) / (factorial(5) * factorial(6) * factorial(9) * factorial(21) * factorial(41))
 # p = 0.104
-# assumed success
+# brood success
 (factorial(15) * factorial(26) * factorial(23) * factorial(18)) / (factorial(12) * factorial(11) * factorial(3) * factorial(15) * factorial(41))
 # p = 0.00987
 
@@ -274,8 +274,8 @@ solo_rs %>%
 
 
 
-## ambiguous nests ---------------------------------------------------------
 
+## ambiguous nests ---------------------------------------------------------
 
 ### success > occup. ---------------------------------------------------------
 solo_rs %>% 
@@ -299,7 +299,7 @@ solo_rs %>%
       BrSucc2122 == 0 ~ 0,
       TRUE ~ 1)) %>%  
   # choose success metric and count outcomes in each category
-  group_by(BrSucc2122, occup.2223) %>% 
+  group_by(CrSucc2122, occup.2223) %>% 
   summarize(count = n())
 
 # confirmed success
