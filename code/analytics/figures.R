@@ -4,7 +4,7 @@
 library(tidyverse)
 library(cowplot)
 
-source('code/analytics/solo_comparison.R')
+source('code/analytics/success_comparison.R')
 source('code/analytics/size_comparison.R')
 source('code/analytics/neighbor_aquisition.R')
 
