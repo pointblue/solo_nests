@@ -47,23 +47,26 @@ Subcol.Succ <-
         `Standard Error`)) %>% 
   filter(!is.na(`Standard Error`))
 
-# fig.2 <-
+fig.2 <-
   ggplot(data = Subcol.Succ, aes(x = `Success Metric`,
-                               y = `Chicks Per Nest`,
-                               group = season,
-                               color = factor(season))) +
+                                 y = `Chicks Per Nest`,
+                                 group = season,
+                                 color = factor(season))) +
   geom_pointrange(aes(ymin =`Chicks Per Nest` - `Standard Error`,
                       ymax = `Chicks Per Nest` + `Standard Error`),
-                  position = position_dodge(width = -0.35, preserve = 'total')) +
-  geom_line(position = position_dodge(width = -0.35)) +
+                  position = position_dodge(width = -0.35, preserve = 'total'),
+                  show.legend = T) +
+  geom_line(position = position_dodge(width = -0.35), show.legend = FALSE) +
   geom_text(data = transMort.labels,
             aes(x =x,
                 y = y,
                 label = transMort),
             size = 4,
             fontface = 'bold',
-            position = position_dodge(width = -0.35)) +
+            position = position_dodge(width = -0.35),
+            show.legend = FALSE) +
   scale_color_manual(name = 'Season', values = c("#A8780DFF", "#DF2A92FF", "#7E71F0FF", "#0C987DFF", "#CB593CFF")) +
+  # guides(color = 'none') +
   theme_minimal() +
   theme(
     axis.title.x = element_text(size = 15),
