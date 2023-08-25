@@ -178,7 +178,7 @@ solo_rs %>%
            filter(ambig == 1) %>%
            pull(nestid))) %>%
   # choose success metric and count outcomes in each category
-  group_by(CrSucc2122, occupied2223) %>% 
+  group_by(BrSucc2122, occupied2223) %>% 
   summarize(count = n())
 
 # creche success

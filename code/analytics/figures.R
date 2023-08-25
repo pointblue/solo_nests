@@ -34,7 +34,7 @@ Subcol.Succ <-
     fishtagComp %>% 
       transmute(
         season = sapply(season, seas_fy),
-        `Success Metric` = 'Creching Success',
+        `Success Metric` = 'Crèching Success',
         `Chicks Per Nest` = CrSucc,
         `Standard Error` = CR.se)) %>% 
   rbind(
@@ -243,6 +243,6 @@ fig4_subplot <-
   plot_grid(fig4,
             fig4_subplot,
             rel_widths = c(2,1),
-            labels = paste0(c('A', 'B')),
-            hjust = -1.05,
+            labels = paste0(c('a', 'b')),
+            hjust = -1.5,
             ncol = 2)

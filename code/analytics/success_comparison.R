@@ -98,7 +98,7 @@ All.Success <-
   rbind(
     tibble(
       `Nest Type` = c('Solitary', 'Subcolony'),
-      `Success Metric` = 'Creching Success',
+      `Success Metric` = 'Crèching Success',
       `Chicks Per Nest` = c(Creche.Success.2021$Avg.Solo.Creche.Success,
                             Creche.Success.2021$Mean.Estimated.Subcol.Creche.Success),
       `Standard Error` = c(Creche.Success.2021$SE.Solo.Creche.Success, NA),
@@ -125,7 +125,7 @@ SubcolCS.Estimates <-
   tibble(
     `Nest Type` = 'Subcolony',
     season = fishtagComp$season,
-    `Success Metric` = 'Creching Success',
+    `Success Metric` = 'Crèching Success',
     `Chicks Per Nest` = All.Success$`Chicks Per Nest`[1] - fishtagComp$transMort,
     `Data` = 'Expected')
 

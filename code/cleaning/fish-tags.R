@@ -187,7 +187,7 @@ ftSizeCR <-
            1,
            0))
 
-# assign success to both chicks from CR2 nests
+# proportion of GF1 chicks which survived to CR
 ftSizeCR %>% 
   filter(correctNumb == 2) %>% 
   transmute(season,
