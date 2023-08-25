@@ -7,9 +7,7 @@ library(effects)
 library(jtools)
 
 source('code/cleaning/solo_nest.R')
-
-test <- 
-  read_csv('data/solo_resight_22_clean.csv')
+source('code/analytics/solo_return_rates.R')
 
 solo_obs_2223 <- 
   read_csv('data/solonest_obs_data_entry_2223.csv')
@@ -56,7 +54,7 @@ neighbs <-
     as.numeric(max_neighbs))) %>% 
   filter(!is.na(max_neighbs)) %>% 
   # select only re-occupied nests
-  filter(nestid %in% (test %>% filter(reOcc == 1) %>% pull(nestid))) %>% 
+  filter(nestid %in% (solo_resight_22 %>% filter(reOcc == 1) %>% pull(nestid))) %>% 
   # bind the maximum number of neighbors observed at each nest in 2021
   left_join(
     (solo_rs %>% 
