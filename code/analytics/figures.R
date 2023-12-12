@@ -87,9 +87,20 @@ F3.transMort.labels <-
     x = c(1.8,1.6),
     y = c(0.56, 0.75))
 
-# combine both success metrics into a single table for viz
+F3.year.labels <- 
+  tibble(
+    `Nest Type` = rep('Subcolony', times = 4),
+    season = seq(2016,2019),
+    x = rep(2.25, times = 4),
+    y = SubcolCS.Estimates$`Chicks Per Nest`)
 
-fig3 <-
+# add season first year to subcolony creching success estimates
+SubcolCS.Estimates <- 
+  SubcolCS.Estimates %>% 
+  mutate(seasonYear = unlist(lapply(season, seas_fy)))
+
+# combine both success metrics into a single table for viz
+#fig3 <-
   All.Success %>%
   ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
   geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
@@ -104,12 +115,28 @@ fig3 <-
              aes(x = `Success Metric`,
                  y = `Chicks Per Nest`,
                  group = `Nest Type`,
-                 fill = `Nest Type`,
+                 fill = NULL,
                  color = `Nest Type`,
                  shape = `Data`),
-             position = position_nudge(x = 0.1),
+             #position = position_nudge(x = 0.1),
              size = 3,
-             alpha = 0.65) +
+             alpha = 0.6) +
+    geom_label_repel(data = SubcolCS.Estimates,
+                     aes(x =2.2,
+                         y = `Chicks Per Nest`,
+                         label = seasonYear,
+                         color = `Nest Type`),
+                     size = 4,
+                     segment.color = "#33CCFF",
+                     fontface = 'bold') +
+  geom_line(data = SubcolCS.Estimates,
+            aes(x = `Success Metric`,
+                y = `Chicks Per Nest`,
+                group = `Nest Type`,
+                color = `Nest Type`),
+            linetype = 'dotted',
+            #position = position_nudge(x = 0.1),
+            alpha = 0.65) +
   geom_text(data = F3.transMort.labels,
             aes(x =x,
                 y = y,
