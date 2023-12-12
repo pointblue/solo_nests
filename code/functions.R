@@ -50,6 +50,23 @@ seas_fy <- function(s) {
 }
 
 
+# season code transform ---------------------------------------------------
+
+seas_code <- 
+  function(s) {
+    #  s here is like "1920" for 2019 - 2020; returns 4 digit year
+    y1 <- 
+      substring(s, 3, 4) %>% 
+      as.numeric()
+    
+    sfy <- 
+      paste0(y1, y1+1) %>% 
+      as.numeric()
+    
+    #RETURN season_fullyr
+    return(as.numeric(sfy))
+  }
+
 
 # get weights -------------------------------------------------------------
 

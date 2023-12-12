@@ -23,7 +23,12 @@ ka_outcome_br <-
   mutate(binaryKA = if_else(
     result == 'FAIL',
     0,
-    1)) %>% 
+    1),
+    # fill in blank subcolonies with areas
+    subcolony = if_else(
+      is.na(subcolony),
+      location,
+      subcolony)) %>% 
   # select relevant columns
   dplyr::select(
     c(nestid = nest,

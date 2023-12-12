@@ -117,11 +117,49 @@ filter(is.na(crChx)) %>%
          nuChx = 9,
          nuEgg = 8,
          kaChx = 0) 
+
+# get subcolony information from resight data
+all_resight <-     
+  read_csv('data/allresight_reference_copy.csv') %>% 
+  mutate(date = lubridate::mdy(date)) %>% 
+  group_by(bandnumb, season) %>% 
+  filter(date == min(date)) %>% 
+  ungroup() %>% 
+  transmute(
+    bandnumb = as.numeric(bandnumb),
+    season = as.numeric(season),
+    subcol = 
+      if_else(
+        is.na(subcolony),
+        stringr::str_to_upper(location),
+        subcolony)) %>% 
+  filter(season >=1617 & !is.na(subcol)) %>% 
+  # fix two birds with multiple subcolony entries
+  mutate(
+    subcol = case_when(
+      bandnumb == 70449 & season == 1920 ~ 'B',
+      bandnumb == 51326 & season == 1617 ~ '34/35',
+      TRUE ~ subcol)) %>% 
+  distinct() 
+
+
   
 # combine all historic nests
 fishtagAll <-
   succFish %>% 
-  rbind(notnTagGDR)
+  rbind(notnTagGDR) %>% 
+  # add subcolonies
+  left_join(
+    all_resight,
+    by = c('bandnumb', 'season')) %>% #group_by(bandnumb, season) %>% summarize(count = n()) %>%  View()
+  mutate(
+    subcol = if_else(
+      is.na(subcol),
+      'WB',
+      str_to_upper(subcol)),
+    subcol = str_replace_all(subcol, pattern = '/', replacement = '-'),
+    subcol = str_replace_all(subcol, pattern = 'L-ISL', replacement = 'LIS'),
+    subcol = str_replace_all(subcol, pattern = 'LBEAC', replacement = 'LBCH'))
 
 # general summary info
 fishtagAll %>% 
@@ -227,4 +265,7 @@ ftSizeCR %>%
   group_by(size) %>% 
   summarize(propSucc = mean(result))
   
-  
+
+# cleanup -----------------------------------------------------------------
+
+rm(all_resight, all.gdr, notnTagGDR, rawFish, succFish)  
