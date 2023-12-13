@@ -84,15 +84,16 @@ F3.transMort.labels <-
         'Δ = ',
         (1 * round(slice_head(Transition.Mortality, n = 2)$transMort,2))
       )),
-    x = c(1.8,1.6),
-    y = c(0.56, 0.75))
+    x = c(1.75,1.6),
+    y = c(0.56, 0.73))
 
-F3.year.labels <- 
+# add 
+F3.sample.labels <- 
   tibble(
-    `Nest Type` = rep('Subcolony', times = 4),
-    season = seq(2016,2019),
-    x = rep(2.25, times = 4),
-    y = SubcolCS.Estimates$`Chicks Per Nest`)
+    `Nest Type` = rep(c('Solitary', 'Subcolony'), each = 1),
+    sample = c(36, 102),
+    x = rep(0.75, times = 2),
+    y = rep(0.05, times = 2))
 
 # add season first year to subcolony creching success estimates
 SubcolCS.Estimates <- 
@@ -100,7 +101,7 @@ SubcolCS.Estimates <-
   mutate(seasonYear = unlist(lapply(season, seas_fy)))
 
 # combine both success metrics into a single table for viz
-#fig3 <-
+fig3 <-
   All.Success %>%
   ggplot(aes(x = `Success Metric`, y = `Chicks Per Nest`)) +
   geom_line(aes(group = `Nest Type`), color = 'black', linetype = 'dashed', alpha = 0.75) +
@@ -115,51 +116,60 @@ SubcolCS.Estimates <-
              aes(x = `Success Metric`,
                  y = `Chicks Per Nest`,
                  group = `Nest Type`,
-                 fill = NULL,
+                 fill = `Nest Type`,
                  color = `Nest Type`,
                  shape = `Data`),
-             #position = position_nudge(x = 0.1),
+             position = position_nudge(x = 0.1),
              size = 3,
              alpha = 0.6) +
     geom_label_repel(data = SubcolCS.Estimates,
-                     aes(x =2.2,
+                     aes(x =2.1,
                          y = `Chicks Per Nest`,
-                         label = seasonYear,
-                         color = `Nest Type`),
+                         label = seasonYear),
+                     force = 0.5,
+                     min.segment.length = 0,
+                     nudge_x = 0.3, 
+                     color = "#33CCFF",
                      size = 4,
-                     segment.color = "#33CCFF",
                      fontface = 'bold') +
-  geom_line(data = SubcolCS.Estimates,
-            aes(x = `Success Metric`,
-                y = `Chicks Per Nest`,
-                group = `Nest Type`,
-                color = `Nest Type`),
-            linetype = 'dotted',
-            #position = position_nudge(x = 0.1),
-            alpha = 0.65) +
-  geom_text(data = F3.transMort.labels,
-            aes(x =x,
-                y = y,
-                label = transMort,
-                color = `Nest Type`,),
-            size = 4,
-            fontface = 'bold',
-            position = position_dodge(width = -0.35)) +
-  scale_shape_manual(values = c(23, 21), name = NULL) +
-  scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
-  scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
-  # scale_y_continuous(limits = c(0,1)) +
-  labs(y = 'Nest Success (chicks/nest)', x = 'Success Metric', color = 'Nest Type') +
-  facet_wrap(~`Nest Type`) +
-  theme_classic()  + 
-  theme(axis.title.x = element_text(size = 12),
-        axis.text.x = element_text(size = 10),
-        axis.title.y = element_text(size = 12),
-        axis.text.y = element_text(size = 10),
-        legend.text = element_text(size = 7),
-        legend.title = element_text(size = 9),
-        strip.text = element_text(size = 12))
-
+    geom_line(data = SubcolCS.Estimates,
+              aes(x = `Success Metric`,
+                  y = `Chicks Per Nest`,
+                  group = `Nest Type`,
+                  color = `Nest Type`),
+              linetype = 'dotted') +
+    geom_text(data = F3.transMort.labels,
+              aes(x =x,
+                  y = y,
+                  label = transMort,
+                  color = `Nest Type`),
+              size = 4,
+              fontface = 'bold',
+              position = position_dodge(width = -0.35)) +
+    geom_text(data = F3.sample.labels,
+              aes(x =x,
+                  y = y,
+                  label = paste('n =', sample, 'nests')),
+              color = 'black',
+              size = 3,
+              fontface = 'italic',
+              position = position_dodge(width = -0.35)) +
+    scale_shape_manual(values = c(23, 21), name = NULL) +
+    scale_fill_manual(values = c("#FFCC33", "#33CCFF")) +
+    scale_color_manual(values = c("#FFCC33", "#33CCFF")) +
+    # scale_y_continuous(limits = c(0,1)) +
+    labs(y = 'Nest Success (chicks/nest)', x = 'Success Metric', color = 'Nest Type') +
+    facet_wrap(~`Nest Type`) +
+    guides(color = NULL) + 
+    theme_classic()  + 
+    theme(axis.title.x = element_text(size = 12),
+          axis.text.x = element_text(size = 10),
+          axis.title.y = element_text(size = 12),
+          axis.text.y = element_text(size = 10),
+          legend.text = element_text(size = 7),
+          legend.title = element_text(size = 9),
+          strip.text = element_text(size = 12))
+  
 # visuzlize difference in transition mortality
 fig3_subplot <-
   Transition.Mortality %>%
