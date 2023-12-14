@@ -67,6 +67,7 @@ fig.2 <-
             show.legend = FALSE) +
   scale_color_manual(name = 'Season', values = c("#A8780DFF", "#DF2A92FF", "#7E71F0FF", "#0C987DFF", "#CB593CFF")) +
   # guides(color = 'none') +
+  labs(y = 'Nest Success (chicks/nest)') +
   theme_minimal() +
   theme(
     axis.title.x = element_text(size = 15),
