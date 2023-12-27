@@ -31,7 +31,29 @@ size_outcome <-
       size == 'PA' ~ 5,
       size == 'PA+' ~ 6))
 
-# extracting chick age ----------------------------------------------------
+# extracting median hatch age ----------------------------------------------------
+# find median hatch of solitary nests
+raw_solo %>% 
+  group_by(nestid) %>% 
+  # find all observations with BR status
+  filter(grepl('BR', status)) %>% 
+  # find the first observation, remove solo 27 which was not sampled regularly
+  filter(date == min(date) & nestid != 'solo27') %>% 
+  distinct() %>% 
+  pull(date) %>% 
+  median()
+
+# find median hatch for subcolony nests
+initial_ka_obs %>% 
+  mutate(date = lubridate::mdy(date)) %>% 
+  group_by(bandnumb) %>% 
+  # find all observations with BR status
+  filter(grepl('BR', status)) %>% 
+  # find the first observation, remove solo 27 which was not sampled regularly
+  filter(date == min(date)) %>% 
+  distinct() %>% 
+  pull(date) %>% 
+  median()
 
 # size comparison ---------------------------------------------------------
 ## OUTCOME SIZE
@@ -57,10 +79,13 @@ model_data <-
          size = factor(size, levels = c(1,2,3,4, 5, 6), ordered = T)) %>% 
   # add day of the year variable where 0 is October 1st
   mutate(yday = lubridate::yday(date)) %>%
-  mutate(yday = if_else(
-    yday >= 358,
-    (yday - 358),
-    yday + 7)) %>% 
+  mutate(yday = case_when(
+    # subcolony nests, median hatch is DEC.24 (yday 358)
+    type == 'Subcolony' & yday >= 358 ~ yday - 358,
+    type == 'Subcolony' & yday < 358 ~ yday + 7,
+    # solitary nests, median hatch is DEC.23 (yday 357)
+    type == 'Solitary' & yday >= 357 ~ yday - 357,
+    type == 'Solitary' & yday < 357 ~ yday + 8)) %>% 
   # remove two outliers which are probably wrong result dt
   filter(yday <= 300) %>% 
   dplyr::select(c(size, yday, type)) 
