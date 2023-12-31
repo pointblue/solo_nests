@@ -227,7 +227,7 @@ fig4 <-
   scale_fill_manual(values = c('Subcolony' = '#33CCFF', 'Solitary' = '#FFCC33'), name = "Nest Type") +
   scale_x_discrete(expand = c(0.1,0.1)) +
   scale_y_continuous(expand = c(0,0.1))+
-  labs(y = 'Percentage (%)', x = 'Chick Size Class') +
+  labs(y = 'Percentage of Chicks (%)', x = 'Chick Size Class') +
   facet_grid(type~.) +
   guides(fill = 'none')+
   theme_classic() + 
@@ -250,16 +250,19 @@ fig4_subplot <-
   mutate(
     type = factor(type,levels = c('Subcolony', 'Solitary')),
     yday = lubridate::yday(date),
-    yday = if_else(
-      yday >= 358,
-      (yday - 358),
-      yday + 7)) %>% # group_by(type) %>% summarize(min = min(yday), q1 = quantile(yday, 0.25), mean = mean(yday), median = median(yday), q3 = quantile(yday, 0.75), max = max(yday))
+    yday = case_when(
+      # subcolony nests, median hatch is DEC.24 (yday 358)
+      type == 'Subcolony' & yday >= 358 ~ yday - 358,
+      type == 'Subcolony' & yday < 358 ~ yday + 7,
+      # solitary nests, median hatch is DEC.23 (yday 357)
+      type == 'Solitary' & yday >= 357 ~ yday - 357,
+      type == 'Solitary' & yday < 357 ~ yday + 8)) %>% # group_by(type) %>% summarize(min = min(yday), q1 = quantile(yday, 0.25), mean = mean(yday), median = median(yday), q3 = quantile(yday, 0.75), max = max(yday))
   filter(yday <= 300)  %>% # remove dates which are too early to represent accurate data
   ggplot() +
   geom_boxplot(aes(x = type, y = yday, fill = type)) +
   scale_fill_manual(values = c('Subcolony' = '#33CCFF', 'Solitary' = '#FFCC33'), name = "Nest Type") +
   coord_flip() +
-  labs(x = NULL, y = 'Days since Median Hatch') +
+  labs(x = NULL, y = 'Brood Duration (Days)') +
   guides(fill = 'none') +
   # coord_flip() +
   theme_classic() + 
