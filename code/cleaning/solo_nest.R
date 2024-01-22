@@ -98,6 +98,36 @@ solo_success <-
   left_join((brSucc_solo %>%
               dplyr::select(nestid, kaChx)),
             by = 'nestid')
+
+
+# find date of chick loss -------------------------------------------------
+
+active_obs <- 
+  raw_solo %>% 
+  filter(nestid %in% solo_outcome_br$nestid)
+
+chicks_by_date <- 
+  active_obs %>% 
+  dplyr::select(nestid, date, status, chick_n) %>% 
+  filter(grepl('BR', status) | grepl('G', status)) %>% 
+  filter(nestid != 'solo27' & status != 'GONE') %>% 
+  # remove any unobserved chicks
+  filter(chick_n != 9) %>% 
+  # change at least one chick (8) to one chick (1)
+  mutate(chick_n = if_else(chick_n == 8,
+                           1, 
+                           chick_n)) %>% 
+  # select only the highest number of observations for each day
+  group_by(nestid, date) %>% 
+  filter(chick_n == max(chick_n)) %>% 
+  # group by nestid
+  group_by(nestid) %>% 
+  # calculate a lagged difference in chick numbers
+  mutate(
+    ch_diff = chick_n - lag(chick_n)) %>% 
+  # find the first day chicks were observed and the day a chick was lost
+  filter(date == min(date) | ch_diff == -1) %>% 
+  mutate(lost_ch = max(date) - min(date))
   
 
 # add spatial and habitat data -----------------------------------------------------------
