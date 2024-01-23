@@ -100,8 +100,32 @@ solo_success <-
             by = 'nestid')
 
 
-# find date of chick loss -------------------------------------------------
+# temporal summaries -------------------------------------------------
+# days between inactive nest first observed and first empty
+inactive_obs <- 
+  raw_solo %>% 
+  filter(!nestid %in% solo_outcome_br$nestid)
 
+nest_occupancy_durration <- 
+  inactive_obs %>% 
+  dplyr::select(nestid, date, status, chick_n) %>% 
+  # remove active but poorly observed nest
+  filter(nestid != 'solo27') %>% 
+  # group by nestid
+  group_by(nestid) %>% 
+  # find the first observation of each status (this is important to find the first day a nest was observed empty)
+  group_by(nestid, status) %>% 
+  filter(date == min(date)) %>% 
+  # find difference between the first day nests were observed and the day a nest was empty
+  group_by(nestid) %>%
+  filter(date == min(date) | status == 'GONE') %>% 
+  summarize(days_present = max(date) - min(date)) 
+
+nest_occupancy_durration %>% 
+  pull(days_present) %>% 
+  summary()
+
+# days between first chick seen and first chick disappearance
 active_obs <- 
   raw_solo %>% 
   filter(nestid %in% solo_outcome_br$nestid)
