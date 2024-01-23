@@ -126,28 +126,34 @@ nest_occupancy_durration %>%
   summary()
 
 # days between first chick seen and first chick disappearance
+breeder_outcomes <- 
+  solo_outcome_br %>%
+  filter(chN >= 1)
+
 active_obs <- 
   raw_solo %>% 
-  filter(nestid %in% solo_outcome_br$nestid)
+  filter(nestid %in% 
+           breeder_outcomes$nestid)
 
 # find single chick nests 
 single_ch_nests <- 
   solo_outcome %>% 
-  filter(chick_n == 2) #%>% nrow()
+  filter(chick_n == 1) #%>% nrow()
 
 chicks_by_date <- 
   active_obs %>% 
   dplyr::select(nestid, date, status, chick_n) %>% 
-  filter(grepl('BR', status) | grepl('G', status)) %>% 
+  filter(grepl('BR', status) | grepl('G', status) | grepl('UNK', status) | grepl('FAIL', status)) %>% 
   filter(nestid != 'solo27' & status != 'GONE') %>% 
   # remove any nests that only had 1 ch to start
-  filter(!nestid %in% single_ch_nests$nestid) %>% # pull(nestid) %>% unique()
+  filter(!nestid %in% single_ch_nests$nestid) %>%  # pull(nestid) %>% unique()
   # remove any unobserved chicks
-  filter(chick_n != 9) %>% 
+  filter(chick_n != 9) %>%
   # change at least one chick (8) to one chick (1)
-  mutate(chick_n = if_else(chick_n == 8,
-                           1, 
-                           chick_n)) %>% 
+  mutate(chick_n = if_else(
+    chick_n == 8,
+    1, 
+    chick_n)) %>% 
   # select only the highest number of observations for each day
   group_by(nestid, date) %>% 
   filter(chick_n == max(chick_n)) %>% 
@@ -157,9 +163,23 @@ chicks_by_date <-
   mutate(
     ch_diff = chick_n - lag(chick_n)) %>% 
   # find the first day chicks were observed and the day a chick was lost
-  filter(date == min(date) | ch_diff == -1) %>% 
-  summarize(lost_ch = max(date) - min(date))
+  filter(date == min(date) | ch_diff <= -1) %>%
+  # find the first chick disappearance
+  group_by(nestid, ch_diff) %>% 
+  filter(date == min(date)) %>%
+  group_by(nestid) %>% 
+  summarize(lost_ch = max(date) - min(date)) %>% 
+  ungroup() %>% 
+  mutate(
+   lost_ch = case_when(
+      nestid == 'solo23' ~ (lubridate::mdy('01/02/2022') - lubridate::mdy('12/19/2021')),
+      nestid == 'solo30' ~ (lubridate::mdy('01/13/2022') - lubridate::mdy('12/29/2021')),
+      nestid == 'solo40' ~ (lubridate::mdy('01/17/2022') - lubridate::mdy('12/29/2021')),
+      TRUE ~ lost_ch))
   
+chicks_by_date %>%
+  pull(lost_ch) %>% 
+  mean()
 
 # add spatial and habitat data -----------------------------------------------------------
 
