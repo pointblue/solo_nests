@@ -130,11 +130,18 @@ active_obs <-
   raw_solo %>% 
   filter(nestid %in% solo_outcome_br$nestid)
 
+# find single chick nests 
+single_ch_nests <- 
+  solo_outcome %>% 
+  filter(chick_n == 2) #%>% nrow()
+
 chicks_by_date <- 
   active_obs %>% 
   dplyr::select(nestid, date, status, chick_n) %>% 
   filter(grepl('BR', status) | grepl('G', status)) %>% 
   filter(nestid != 'solo27' & status != 'GONE') %>% 
+  # remove any nests that only had 1 ch to start
+  filter(!nestid %in% single_ch_nests$nestid) %>% # pull(nestid) %>% unique()
   # remove any unobserved chicks
   filter(chick_n != 9) %>% 
   # change at least one chick (8) to one chick (1)
@@ -151,7 +158,7 @@ chicks_by_date <-
     ch_diff = chick_n - lag(chick_n)) %>% 
   # find the first day chicks were observed and the day a chick was lost
   filter(date == min(date) | ch_diff == -1) %>% 
-  mutate(lost_ch = max(date) - min(date))
+  summarize(lost_ch = max(date) - min(date))
   
 
 # add spatial and habitat data -----------------------------------------------------------
