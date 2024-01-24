@@ -6,6 +6,8 @@ library(tidyverse)
 library(data.table)
 library(lubridate)
 
+source('code/functions.R')
+
 solo_outcome <- read_csv("data/solo_outcomes.csv") 
 
 initial_solo_obs <- read_csv(
@@ -123,7 +125,7 @@ nest_occupancy_durration <-
 
 nest_occupancy_durration %>% 
   pull(days_present) %>% 
-  summary()
+  se()
 
 # days between first chick seen and first chick disappearance
 breeder_outcomes <- 
@@ -179,7 +181,7 @@ chicks_by_date <-
   
 chicks_by_date %>%
   pull(lost_ch) %>% 
-  mean()
+  se()
 
 # add spatial and habitat data -----------------------------------------------------------
 
