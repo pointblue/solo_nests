@@ -3,6 +3,7 @@
 
 library(tidyverse)
 library(cowplot)
+library(ggrepel)
 
 source('code/analytics/success_comparison.R')
 source('code/analytics/size_comparison.R')
