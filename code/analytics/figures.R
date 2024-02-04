@@ -168,8 +168,8 @@ fig3 <-
           axis.text.x = element_text(size = 10),
           axis.title.y = element_text(size = 12),
           axis.text.y = element_text(size = 10),
-          legend.text = element_text(size = 7),
-          legend.title = element_text(size = 9),
+          legend.text = element_text(size = 9),
+          legend.title = element_text(size = 12),
           strip.text = element_text(size = 12))
   
 # visuzlize difference in transition mortality
